@@ -143,6 +143,17 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
         return '';
     }
 
+    // Adicionar zero à esquerda do dia ou mês
+    const partesOrigem = formatoOrigem.split('/');
+    let partes = data_nascimento.split('/');
+
+    for (let i = 0; i < 3; i++) {
+        if (partesOrigem[i] === 'dd' || partesOrigem[i] === 'mm') {
+            partes[i] = '0' + partes[i];
+        }
+    }
+    data_nascimento = partes.join('/');
+
     const regex = {
         'dd/mm/yyyy': /^(\d{2})\/(\d{2})\/(\d{4})$/,
         'dd/yyyy/mm': /^(\d{2})\/(\d{4})\/(\d{2})$/,
@@ -312,7 +323,7 @@ function corrigirEmail(email) {
 
 }
 
-const corrigirAnotacao = anotacao => anotacao.trim().replace(/\s+/g, " "); // Remove espaços extras por apenas um
+const corrigirAnotacao = anotacao => anotacao.trim().replace(/,/g, " ").replace(/\s+/g, " "); // Tirar as virgulas / Remover espaços extras por apenas um.
 
 function corrigirDDD(ddd) {
 

@@ -8,19 +8,16 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
         return '';
     }
 
-    let teste = data_nascimento.slice(0,2);
+    // Adicionar zero à esquerda do dia ou mês
+    const partesOrigem = formatoOrigem.split('/');
+    let partes = data_nascimento.split('/');
 
-    if (teste.includes('/')) {
-        data_nascimento = `0${data_nascimento}`;
+    for (let i = 0; i < 3; i++) {
+        if (partesOrigem[i] === 'dd' || partesOrigem[i] === 'mm') {
+            partes[i] = '0' + partes[i];
+        }
     }
-
-    teste = data_nascimento.slice(3,4);
-
-    if (teste.includes('/')) {
-        data_nascimento = `${data_nascimento.slice(0,2)}/0${data_nascimento.slice(3)}`;
-    }
-
-    console.log(data_nascimento);
+    data_nascimento = partes.join('/');
 
     const regex = {
         'dd/mm/yyyy': /^(\d{2})\/(\d{2})\/(\d{4})$/,
@@ -58,11 +55,9 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
         }
       } else {
         return '';
-        //throw new Error("Formato de origem não corresponde à data fornecida.");
       }
     } else {
         return '';
-        //throw new Error("Formato de origem não reconhecido.");
     }
 
     if (ano.length === 2 && (formatoFinal.match(/y/g) || []).length === 4) {
@@ -97,14 +92,13 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
         dataFormatada = `${ano}/${mes}/${dia}`;        
     } else {
         return '';
-        //throw new Error("Formato final não encontrado.");
     }
   
     return dataFormatada;
 
 }
 
-console.log(corrigirData_nascimento('3;1;24', 'dd/mm/yy', 'dd/mm/yyyy'));
+console.log(corrigirData_nascimento('3;24;9', 'mm/yy/dd', 'dd/mm/yyyy'));
 //console.log(String(new Date().getFullYear()).slice(2));
 
 //console.log('ab'.match(/y/g));
