@@ -135,9 +135,9 @@ function corrigirCpf_cnpj(cpf_cnpj) {
 
 function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 'dd/mm/yyyy') {
 
-    data_nascimento = data_nascimento.replace(/\D/g, '/');
-    
-    const numeroBarras = (data_nascimento.match(/\//g) || []).length;
+    data_nascimento = data_nascimento.replace(/\D/g, '/'); // Tudo o que não é número vira barra
+
+    const numeroBarras = (data_nascimento.match(/\//g) || []).length; // Quantidade de barras
     
     if (numeroBarras != 2) {
         return '';
@@ -148,7 +148,7 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
     let partes = data_nascimento.split('/');
 
     for (let i = 0; i < 3; i++) {
-        if (partesOrigem[i] === 'dd' || partesOrigem[i] === 'mm') {
+        if ((partesOrigem[i] === 'dd' || partesOrigem[i] === 'mm') && partes[i].length === 1) {
             partes[i] = '0' + partes[i];
         }
     }
@@ -171,7 +171,7 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
     };
 
     let dia, mes, ano;
-    
+
     if (regex[formatoOrigem]) {
       const match = data_nascimento.match(regex[formatoOrigem]);
       if (match) {
@@ -195,20 +195,23 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
         return '';
     }
 
-    if (ano.length === 2 && (formatoFinal.match(/y/g) || []).length === 4) {
-        if (ano > String(new Date().getFullYear()).slice(2)) {
-            ano = `19${ano}`;
-        } else {
-            ano = `20${ano}`;
-        }
-    }
-
     if (dia <= 0 || dia > 31) {
         return '';
     } else if (mes <= 0 || mes > 12) {
         return '';
     } else if (ano.length === 4 && (ano < 1900 || ano > new Date().getFullYear())) {
         return '';
+    }
+
+    // Formata ano de 2 digitos para 4, ou vice-versa
+    if (ano.length === 2 && (formatoFinal.match(/y/g) || []).length === 4) {
+        if (ano > String(new Date().getFullYear()).slice(2)) {
+            ano = `19${ano}`;
+        } else {
+            ano = `20${ano}`;
+        }
+    } else if (ano.length === 4 && (formatoFinal.match(/y/g) || []).length === 2) {
+        ano = ano.slice(-2);
     }
   
     let dataFormatada;
