@@ -1,0 +1,19 @@
+.botoes-modal {
+    padding-bottom: 20px;
+}
+
+.button-padrao {
+    padding: 8px 15px;
+    margin: 0px 5px;
+    border: none;
+    border-radius: 15px;
+    color: white;
+    background-color: #4900F9;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.1s;
+}
+
+.button-padrao:hover {
+    background-color: #3700D8;
+}

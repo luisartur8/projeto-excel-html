@@ -1,0 +1,52 @@
+.table-excel {
+    border: 2px solid black;
+    border-radius: 5px;
+    overflow-y: auto;
+    max-height: 63vh;
+}
+
+.nenhuma-planilha {
+    color: black;
+    font-size: 24px;
+    display: flex;
+    row-gap: 15px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 60vh;
+}
+
+.minha-tabela {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.minha-table th .minha-tabela td {
+    display: flex;
+    text-align: center;
+    align-content: center;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.minha-tabela td {
+    white-space: nowrap;
+    padding: 3px 3px;
+}
+
+.botoes-header {
+    display: flex;
+    justify-content: center;
+}
+
+#comboTipos {
+    max-width: 150px;
+    text-align: center;
+    border: none;
+    outline: none;
+}
+
+.selected-cell {
+    outline: 2px solid #0078D4;
+    border-radius: 3px;
+}

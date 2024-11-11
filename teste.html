@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carregar Excel</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .conteudo {
+            display: flex;
+            border-radius: 3px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .texto-acima {
+            font-size: 18px;
+        }
+
+        .numero-input {
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 5px 10px;
+            outline: none;
+            margin-bottom: 10px;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="conteudo">
+            <p class="texto-acima">Teste de valores</p>
+            <input placeholder="Insira valor aqui" type="text" class="numero-input" value="email@gmail.com">
+            <div class="aparecer-valor"></div>
+        </div>
+    </div>
+
+    <script src="js/validacao.js"></script>
+
+    <script>
+
+        funcaoTeste();
+
+        const funcaoTeste = () => {
+            alert('teste');
+        }
+
+        const input = document.querySelector('.numero-input');
+            const resultado = document.querySelector('.aparecer-valor');
+
+            // Atualiza o resultado inicialmente com o valor do input
+            resultado.innerHTML = corrigirGenero(input.value);
+
+            // Atualiza o resultado sempre que o valor do input mudar
+            input.addEventListener('input', () => {
+                resultado.innerHTML = corrigirGenero(input.value);
+            });
+
+    </script>
+
+</body>
+
+</html>

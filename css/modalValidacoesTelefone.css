@@ -1,0 +1,104 @@
+#modalValidaTelefone {
+    display: none;
+    font-family: Arial, Helvetica, sans-serif;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#modalHeaderValidaTelefone {
+    height: 20px;
+    padding-top: 15px;
+    margin: 0;
+}
+
+.modal-telefone-bordinha {
+    
+    padding: 20px;
+    padding-top: 0;
+    max-width: 400px;
+    width: 90%;
+
+}
+
+.modal-telefone-content {
+    background-color: #fff;
+    border-radius: 10px;
+    position: fixed;
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.validar-como {
+    margin-top: 0;
+    text-align: center;
+}
+
+.label-sem-ddd, .label-com-ddd, .inserir-ddd-personalizado {
+    display: block;
+    margin: 10px;
+}
+
+.input-telefone-inserir-ddd {
+    display: block;
+    width: calc(100% - 20px);
+    border: 1px solid black;
+    border-radius: 3px;
+    margin: 5px 0;
+    font-weight: bold;
+    padding: 5px;
+    padding-left: 10px;
+    outline: none;
+}
+
+.p-ddd-invalido {
+    color: red;
+    font-weight: bold;
+    padding-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.quadrado-com-ddd {
+    border: 1px solid #888;
+    border-radius: 5px;
+    padding: 10px;
+    padding-bottom: 0;
+}
+
+.modal-telefone-botoes {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.botoesTelefone {
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: greenyellow;
+    padding: 8px 18px;
+    color: white;
+    cursor: pointer;
+}
+
+.botaoValidarTelefone {
+    background-color: green;
+}
+
+.botaoValidarTelefone:hover {
+    background-color: darkgreen;
+}
+
+.botaoFecharTelefone {
+    background-color: red;
+}
+
+.botaoFecharTelefone:hover {
+    background-color: rgb(214, 0, 0);
+}

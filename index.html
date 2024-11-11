@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Excel</title>
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/tableExcel.css">
+    <link rel="stylesheet" href="css/contentModal.css">
+    <link rel="stylesheet" href="css/modalLocalizarSubstituir.css">
+    <link rel="stylesheet" href="css/modalValidacoesTelefone.css">
+    <link rel="stylesheet" href="css/modalValidacoesNascimento.css">
+    <link rel="stylesheet" href="css/popupConfirmaDeleteColuna.css">
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>-->
+    <script src="libs/xlsx.full.min.js"></script>
+    <script src="js/htmlContent.js" defer></script>
+    <script src="js/manipulaModalGerenciador.js" defer></script>
+    <script src="js/carregaPlanilha.js" defer></script>
+    <script src="js/baixarPlanilha.js" defer></script>
+    <script src="js/modalPopUpDeleteColumn.js" defer></script>
+    <script src="js/modalLocalizarSubstituir.js" defer></script>
+    <script src="js/modalValidacoesTelefone.js" defer></script>
+    <script src="js/modalValidacoesNascimento.js" defer></script>
+    <script src="js/manipulaTable.js" defer></script>
+    <script src="js/contentButtons.js" defer></script>
+    <script src="js/validacao.js" defer></script>
+    <script src="js/arrastarModais.js" defer></script>
+</head>
+
+<body>
+
+    <button id="openModalBtn">Abrir Modal</button>
+
+    <!--Modal Gerenciador de planilhas-->
+    <div id="modalTableExcel">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p>Gerenciador de planilhas</p>
+                <span class="btn-close">&times;</span>
+            </div>
+            <div class="botoes-modal">
+                <button id="button-baixar-planilha" class="button-padrao">Baixar planilha</button>
+                <button id="button-apaga-planilha" class="button-padrao">Apagar planilha</button>
+                <button class="button-padrao">Exportar planilha</button>
+                <button id="remove-linhas-vazias" class="button-padrao">Remover linhas vazias</button>
+                <button id="junta-ddd-telefone" class="button-padrao">Juntar DDD e telefone</button>
+            </div>
+            <div id="table-excel" class="table-excel">
+                <div class="nenhuma-planilha">
+                    <p>Nenhuma planilha carregada</p>
+                    <input type="file" id="upload-planilha" accept=".xlsx, .xls" />
+                    <button id="button-carrega-planilha" class="button-padrao">Carregar planilha</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal de popup de exclusão de coluna-->
+    <div id="popupDeletaColuna" tabindex="-1">
+        <div class="popupExclusaoConteudo draggable-modal">
+            <p class="popupHeaderExcluirColuna dragHandle"></p>
+            <img class="popupImagemX" src="assets/img/botaoX.png">
+            <p>Confirmar exclusão da coluna?</p>
+            <div class="popupAgrupaBotao">
+                <button class="popupBotaoCancelarColuna"><img src="assets/img/icon-cancelar.png">Cancelar</button>
+                <button class="popupBotaoExcluirColuna"><img src="assets/img/icon-lixeira.png">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal Localizar e Substituir-->
+    <div id="modalLocalizarSubstituir">
+        <div class="modal-localiza-subst-conteudo draggable-modal">
+            <div>
+                <div id="modalHeaderLocalizarSubstituir" class="dragHandle">
+                    <label>Localizar e substituir</label>
+                    <span>X</span>
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label>Localizar</label>
+                            </td>
+                            <td>
+                                <input class="modal-input-search" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Substituir</label>
+                            </td>
+                            <td>
+                                <input class="modal-input-replace" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <div>
+                                    <label>
+                                        <input class="modal-search-upper-lower-checkbox" type="checkbox">
+                                        Diferenciar maiúsculas e minúsculas
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <div>
+                                    <label>
+                                        <input class="modal-search-regex-checkbox" type="checkbox">
+                                        Pesquisar usando expressões regulares
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="campo-mostrar-informacoes-search">
+                            <td colspan="2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-search-reaplace-buttons">
+                <button name="findNext" class="botao-acoes search-button">Procurar</button>
+                <button name="replace" class="botao-acoes replace-button">Substituir</button>
+                <button name="replaceAll" class="botao-acoes replaceAll-button">Substituir tudo</button>
+                <button name="done" class="done-button">Concluído</button>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal de validação do telefone-->
+    <div id="modalValidaTelefone">
+        <div class="modal-telefone-content draggable-modal">
+            <div id="modalHeaderValidaTelefone" class="dragHandle"></div>
+            <div class="modal-telefone-bordinha">
+                <p class="validar-como">VALIDAR COMO</p>
+                <form class="formulario-modal-telefone">
+                    <label class="label-sem-ddd">
+                        <input class="radio-telefone-sem-ddd" type="radio" name="opcoes-telefone" value="sem">
+                        SEM DDD (9 8888-8888)
+                    </label>
+                    <div class="quadrado-com-ddd">
+                        <label class="label-com-ddd">
+                            <input class="radio-telefone-com-ddd" type="radio" name="opcoes-telefone" value="com">
+                            COM DDD (99 9 8888-8888)
+                        </label>
+                        <label class="inserir-ddd-personalizado">
+                            <input class="checkbox-telefone-inserir-ddd" type="checkbox">
+                            Inserir DDD personalizado
+                        </label>
+                        <input class="input-telefone-inserir-ddd" type="text" placeholder="Para telefones sem DDD">
+                        <p class="p-ddd-invalido">DDD Inválido</p>
+                    </div>
+                </form>
+                <div class="modal-telefone-botoes">
+                    <button class="botoesTelefone botaoValidarTelefone">Validar</button>
+                    <button class="botoesTelefone botaoFecharTelefone">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal de validação do data_nascimento-->
+    <div id="modalValidaNascimento">
+        <div class="modal-nascimento-conteudo draggable-modal">
+            <div id="modalHeaderValidaNascimento" class="dragHandle"></div>
+            <div class="nascimento-conteudo-central">
+                <div class="quadrado-conteudo-nascimento">
+                    <p>Data original</p>
+                    <div class="nascimento-data-original">
+                        <select class="dia-mes-ano-original-1">
+                            <option value="dd">Dia</option>
+                            <option value="mm">Mês</option>
+                            <option value="yyyy">Ano(yyyy)</option>
+                            <option value="yy">Ano(yy)</option>
+                        </select>
+                        <select class="dia-mes-ano-original-2">
+                            <option value="dd">Dia</option>
+                            <option value="mm">Mês</option>
+                            <option value="yyyy">Ano(yyyy)</option>
+                            <option value="yy">Ano(yy)</option>
+                        </select>
+                        <select class="dia-mes-ano-original-3">
+                            <option value="dd">Dia</option>
+                            <option value="mm">Mês</option>
+                            <option value="yyyy">Ano(yyyy)</option>
+                            <option value="yy">Ano(yy)</option>
+                        </select>
+                    </div>
+
+                    <p>Data final</p>
+
+                    <div class="nascimento-data-final">
+                        <select class="dia-mes-ano-final-1">
+                            <option value="dd">Dia</option>
+                            <option value="mm">Mês</option>
+                            <option value="yyyy">Ano(yyyy)</option>
+                            <option value="yy">Ano(yy)</option>
+                        </select>
+                        <select class="dia-mes-ano-final-2">
+                            <option value="dd">Dia</option>
+                            <option value="mm">Mês</option>
+                            <option value="yyyy">Ano(yyyy)</option>
+                            <option value="yy">Ano(yy)</option>
+                        </select>
+                        <select class="dia-mes-ano-final-3">
+                            <option value="dd">Dia</option>
+                            <option value="mm">Mês</option>
+                            <option value="yyyy">Ano(yyyy)</option>
+                            <option value="yy">Ano(yy)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-nascimento-botao">
+                    <button class="botoesNascimento botaoValidarNascimento"><img
+                            src="assets/img/icon-cancelar.png">Validar</button>
+                    <button class="botoesNascimento botaoFecharNascimento"><img
+                            src="assets/img/icon-lixeira.png">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

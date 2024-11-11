@@ -1,0 +1,87 @@
+#modalValidaNascimento {
+    display: none;
+    font-family: Arial, Helvetica, sans-serif;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+}
+
+.modal-nascimento-conteudo {
+    display: flex;
+    width: 400px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}
+
+
+#modalHeaderValidaNascimento {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 38px;
+}
+
+.nascimento-conteudo-central {
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.quadrado-conteudo-nascimento {
+    border: 1px solid #888;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.modal-nascimento-botao {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.botoesNascimento {
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: greenyellow;
+    padding: 8px 18px;
+    color: white;
+    cursor: pointer;
+}
+
+.botaoValidarNascimento {
+    background-color: green;
+}
+
+.botaoValidarNascimento:hover {
+    background-color: darkgreen;
+}
+
+.botaoFecharNascimento {
+    background-color: red;
+}
+
+.botaoFecharNascimento:hover {
+    background-color: rgb(214, 0, 0);
+}
+
+.botaoValidarNascimento img,
+.botaoFecharNascimento img {
+    width: 14px;
+    margin-right: 2px;
+}
