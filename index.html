@@ -37,7 +37,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <p>Gerenciador de planilhas</p>
-                <span class="btn-close">&times;</span>
+                <div>
+                    <select id="tipoPlanilha" onchange="mudarTipoPlanilha()">
+                        <option value="cliente">Cliente</option>
+                        <option value="lancamento">Lançamentos</option>
+                        <option value="oportunidade">Oportunidade</option>
+                        <option value="produtos">Produtos</option>
+                    </select>
+                    <span class="btn-close">&times;</span>
+                </div>
             </div>
             <div class="botoes-modal">
                 <button id="button-baixar-planilha" class="button-padrao">Baixar planilha</button>

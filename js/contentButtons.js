@@ -8,6 +8,8 @@ const excluirSemCpfTelefone = document.getElementById('excluir-sem-cpj_cnpj-tele
 const tableExcel = document.getElementById('table-excel');
 const nenhumaPlanilha = document.getElementById('nenhuma-planilha');
 
+const tipoPlanilha = document.getElementById('tipoPlanilha');
+
 buttonBaixaPlanilha.addEventListener('click', () => {
     exportarParaExcel();
 });
@@ -144,6 +146,11 @@ excluirSemCpfTelefone.addEventListener('click', () => {
         }
     }
 
+    if (indexCpf_cnpj.length === 0 || indexTelefone.length === 0) {
+        alert('Selecionar antes!');
+        return;
+    }
+
     for (let i = rows.length - 1; i >= 0; i--) {
         const row = rows[i];
 
@@ -175,3 +182,31 @@ excluirSemCpfTelefone.addEventListener('click', () => {
     atualizarNumeroLinha();
 
 });
+
+function mudarTipoPlanilha() {
+    if (!tableExcel.querySelector('table')) {
+        alert('Nenhuma planilha foi carregada!');
+        return;
+    }
+
+    const table = document.querySelector('.table-excel table');
+    const row = table.querySelector("thead tr");
+
+    const tipo = tipoPlanilha.value;
+
+    console.log(row);
+    console.log(row.cells.length);
+
+    for (let i = 2; i < row.cells.length; i++) {
+        const selectAtual = row.cells[i].querySelector('.selectAtual');
+        if (tipo === 'cliente') {
+            selectAtual.innerHTML = tipoCliente;
+        } else if (tipo === 'lancamento') {
+            selectAtual.innerHTML = tipoLancamento;
+        } else if (tipo === 'oportunidade') {
+            selectAtual.innerHTML = tipoOportunidade;
+        } else if (tipo === 'produtos') {
+            selectAtual.innerHTML = tipoProdutos;
+        }
+    }
+}

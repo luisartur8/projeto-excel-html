@@ -36,7 +36,28 @@
 
 .botoes-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    margin: 0px 5px;
+}
+
+.thead-icons-central button {
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.thead-icons-central button img {
+    width: 14px;
+    height: 14px;
+}
+
+.thead-icons-central button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.thead-icons-central button:active {
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 #comboTipos {
