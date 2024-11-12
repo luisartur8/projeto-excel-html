@@ -4,7 +4,6 @@ let comboBoxNameAtual;
 let removeColumnAtualIndex;
 let celulaSelecionada = null;
 
-
 function capturaInfoTable() {
     const table = document.querySelector('.table-excel table');
     const rows = table.rows;

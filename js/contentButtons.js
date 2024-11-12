@@ -1,12 +1,49 @@
+const buttonBaixaPlanilha = document.getElementById('button-baixar-planilha');
 const buttonApaga = document.getElementById('button-apaga-planilha');
+//
+const removerLinhasVazias = document.getElementById('remove-linhas-vazias');
 const juntaDDDTelefone = document.getElementById('junta-ddd-telefone');
+const excluirSemCpfTelefone = document.getElementById('excluir-sem-cpj_cnpj-telefone');
+
 const tableExcel = document.getElementById('table-excel');
 const nenhumaPlanilha = document.getElementById('nenhuma-planilha');
-const removerLinhasVazias = document.getElementById('remove-linhas-vazias');
+
+buttonBaixaPlanilha.addEventListener('click', () => {
+    exportarParaExcel();
+});
 
 buttonApaga.addEventListener('click', () => {
     tableExcel.innerHTML = `<div class="nenhuma-planilha"><p>Nenhuma planilha carregada</p><input type="file" id="upload-planilha" accept=".xlsx, .xls" /><button id="button-carrega-planilha" class="button-padrao">Carregar planilha</button></div>`;
     addEventListeners();
+});
+
+removerLinhasVazias.addEventListener('click', () => {
+    const infosTable = capturaInfoTable();
+
+    if (!infosTable.table || !infosTable.rows) return;
+
+    const rows = infosTable.rows;
+    let linhasRemovidas = 0;
+
+    for (let r = rows.length - 1; r >= 0; r--) {
+        const cells = rows[r].cells;
+        let isEmpty = true;
+
+        for (let c = 2; c < cells.length; c++) {
+            if (cells[c].innerHTML.trim() !== '') {
+                isEmpty = false;
+                break;
+            }
+        }
+
+        if (isEmpty) {
+            rows[r].remove();
+            linhasRemovidas++;
+        }
+    }
+
+    atualizarNumeroLinha();
+
 });
 
 juntaDDDTelefone.addEventListener('click', () => {
@@ -79,30 +116,60 @@ juntaDDDTelefone.addEventListener('click', () => {
 
 });
 
+excluirSemCpfTelefone.addEventListener('click', () => {
 
-removerLinhasVazias.addEventListener('click', () => {
-    const infosTable = capturaInfoTable();
+    if (!tableExcel.querySelector('table')) {
+        alert('Nenhuma planilha foi carregada!');
+        return;
+    }
 
-    if (!infosTable.table || !infosTable.rows) return;
+    const table = document.querySelector('.table-excel table');
+    const rows = table.querySelectorAll("tbody tr");
 
-    const rows = infosTable.rows;
-    let linhasRemovidas = 0;
+    const headers = table.querySelectorAll('th');
+    const headerValuesArray = Array.from(headers).map(header => {
+        const select = header.querySelector('select');
+        return select ? select.value : null;
+    });
 
-    for (let r = rows.length - 1; r >= 0; r--) {
-        const cells = rows[r].cells;
-        let isEmpty = true;
+    let indexCpf_cnpj = [];
+    let indexTelefone = [];
 
-        for (let c = 2; c < cells.length; c++) {
-            if (cells[c].innerHTML.trim() !== '') {
-                isEmpty = false;
+    for (let i = 0; i < headerValuesArray.length; i++) {
+        if (headerValuesArray[i] === 'cpf_cnpj') {
+            indexCpf_cnpj.push(i);
+        }
+        if (headerValuesArray[i] === 'telefone') {
+            indexTelefone.push(i);
+        }
+    }
+
+    for (let i = rows.length - 1; i >= 0; i--) {
+        const row = rows[i];
+
+        let semCpfCnpj = true;
+        let semTelefone = true;
+
+        for (let j = 0; j < indexCpf_cnpj.length; j++) {
+            const colunaCpf = indexCpf_cnpj[j];
+            if (row.cells[colunaCpf].textContent.trim() !== '') {
+                semCpfCnpj = false;
                 break;
             }
         }
 
-        if (isEmpty) {
-            rows[r].remove();
-            linhasRemovidas++;
+        for (let j = 0; j < indexTelefone.length; j++) {
+            const colunaTelefone = indexTelefone[j];
+            if (row.cells[colunaTelefone].textContent.trim() !== '') {
+                semTelefone = false;
+                break;
+            }
         }
+
+        if (semCpfCnpj && semTelefone) {
+            row.remove();
+        }
+    
     }
 
     atualizarNumeroLinha();

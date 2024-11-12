@@ -1,28 +1,36 @@
 function exportarParaExcel() {
-    const tabela = document.querySelector('.minha-tabela');
-    const worksheet = XLSX.utils.table_to_sheet(tabela);
+    const table = document.querySelector('.minha-tabela');
 
-    const range = XLSX.utils.decode_range(worksheet['!ref']);
-    for (let c = range.s.c; c <= range.e.c; c++) {
-        if (c < 2) continue;
-        const cellAddress = XLSX.utils.encode_cell({ r: 0, c: c });
-        const selectElement = tabela.querySelector(`thead tr th:nth-child(${c + 1}) select`);
+    if (!table) return;
+
+    const workbook = XLSX.utils.book_new();
+
+    let data = [];
+    for (let row of table.rows) {
+        let rowData = [];
+        for (let j = 2; j < row.cells.length; j++) {
+            rowData.push(row.cells[j].innerText);
+        }
+        data.push(rowData);
+    }
+
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
+
+    const finalRow = data.length - 1;
+    const finalColumn = data[0].length - 1;
+    worksheet['!ref'] = `A1:${XLSX.utils.encode_cell({ r: finalRow, c: finalColumn })}`;
+
+    for (let C = 0; C < data[0].length; C++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: 0, c: C });
+        const selectElement = table.querySelector(`thead tr th:nth-child(${C + 3}) select`);
+
         if (selectElement) {
-            worksheet[cellAddress].v = selectElement.value;
-            worksheet[cellAddress].s = {
-                fill: { fgColor: { rgb: "ADD8E6" } },
-                font: { bold: true }
+            worksheet[cellAddress] = {
+                v: selectElement.value
             };
         }
     }
 
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'nome do arquivo');
-    XLSX.writeFile(workbook, 'TabelaExportada.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Tabela Exportada");
+    XLSX.writeFile(workbook, "Tabela_Exportada.xlsx");
 }
-
-const buttonBaixaPlanilha = document.getElementById('button-baixar-planilha');
-
-buttonBaixaPlanilha.addEventListener('click', () => {
-    exportarParaExcel();
-});
