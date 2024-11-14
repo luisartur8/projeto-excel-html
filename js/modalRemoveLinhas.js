@@ -16,6 +16,8 @@ const cbGeneroRemoveLinha = document.querySelector('.modal-linhas-genero-checkbo
 const cbEmailRemoveLinha = document.querySelector('.modal-linhas-email-checkbox');
 const cbAnotacaoRemoveLinha = document.querySelector('.modal-linhas-anotacao-checkbox');
 
+const informacaoLinhas = document.querySelector('.informacoes-linhas-removidas');
+
 function configurarModalRemoveLinhas() {
     cbNomeRemoveLinha.checked = false;
     cbTelefoneRemoveLinha.checked = true;
@@ -24,6 +26,8 @@ function configurarModalRemoveLinhas() {
     cbGeneroRemoveLinha.checked = false;
     cbEmailRemoveLinha.checked = false;
     cbAnotacaoRemoveLinha.checked = false;
+
+    informacaoLinhas.innerHTML = '';
 
     centerModal(modalRemoverLinhasConteudo);
 }
@@ -69,6 +73,12 @@ btnRemoverLinhasVazias.addEventListener('click', () => {
         }
     }
 
+    if (linhasRemovidas !== 0) {
+        informacaoLinhas.innerHTML = `Foram removidas ${linhasRemovidas} linhas`;
+    } else {
+        informacaoLinhas.innerHTML = `Nenhuma linha foi removida`;
+    }
+
     atualizarNumeroLinha();
 });
 
@@ -76,6 +86,7 @@ btnRemoverColunasVazias.addEventListener('click', () => {
     const infosTable = capturaInfoTable();
 
     const rows = infosTable.rows;
+    let colunasRemovidas = 0;
 
     if (!infosTable.table || !infosTable.rows) return;
 
@@ -97,8 +108,15 @@ btnRemoverColunasVazias.addEventListener('click', () => {
 
         if (apagaColuna) {
             removeColumnByIndex(c);
+            colunasRemovidas++;
         }
 
+    }
+
+    if (colunasRemovidas !== 0) {
+        informacaoLinhas.innerHTML = `Foram removidas ${colunasRemovidas} colunas`;
+    } else {
+        informacaoLinhas.innerHTML = `Nenhuma coluna foi removida`;
     }
 
 });
@@ -126,6 +144,8 @@ btnRemoverLinhasEspecificas.addEventListener('click', () => {
     let indexGenero = [];
     let indexEmail = [];
     let indexAnotacao = [];
+
+    let linhasRemovidas = 0;
 
     for (let i = 0; i < headerValuesArray.length; i++) {
         if (headerValuesArray[i] === 'nome') {
@@ -164,6 +184,9 @@ btnRemoverLinhasEspecificas.addEventListener('click', () => {
                     break;
                 }
             }
+            if (indexNome.length === 0) {
+                todasVazias = false;
+            }
         }
 
         if (cbTelefoneRemoveLinha.checked) {
@@ -173,6 +196,9 @@ btnRemoverLinhasEspecificas.addEventListener('click', () => {
                     todasVazias = false;
                     break;
                 }
+            }
+            if (indexTelefone.length === 0) {
+                todasVazias = false;
             }
         }
 
@@ -184,6 +210,9 @@ btnRemoverLinhasEspecificas.addEventListener('click', () => {
                     break;
                 }
             }
+            if (indexCpf_cnpj.length === 0) {
+                todasVazias = false;
+            }
         }
 
         if (cbDataNascimentoRemoveLinha.checked) {
@@ -193,6 +222,9 @@ btnRemoverLinhasEspecificas.addEventListener('click', () => {
                     todasVazias = false;
                     break;
                 }
+            }
+            if (indexData_nascimento.length === 0) {
+                todasVazias = false;
             }
         }
 
@@ -204,6 +236,9 @@ btnRemoverLinhasEspecificas.addEventListener('click', () => {
                     break;
                 }
             }
+            if (indexGenero.length === 0) {
+                todasVazias = false;
+            }
         }
 
         if (cbEmailRemoveLinha.checked) {
@@ -213,6 +248,9 @@ btnRemoverLinhasEspecificas.addEventListener('click', () => {
                     todasVazias = false;
                     break;
                 }
+            }
+            if (indexEmail.length === 0) {
+                todasVazias = false;
             }
         }
 
@@ -224,11 +262,21 @@ btnRemoverLinhasEspecificas.addEventListener('click', () => {
                     break;
                 }
             }
+            if (indexAnotacao.length === 0) {
+                todasVazias = false;
+            }
         }
 
         if (todasVazias) {
             row.remove();
+            linhasRemovidas++;
         }
+    }
+
+    if (linhasRemovidas !== 0) {
+        informacaoLinhas.innerHTML = `Foram removidas ${linhasRemovidas} linhas`;
+    } else {
+        informacaoLinhas.innerHTML = `Nenhuma linha foi removida`;
     }
 
     atualizarNumeroLinha();

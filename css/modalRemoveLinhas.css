@@ -78,6 +78,10 @@
     align-items: center;
 }
 
+.informacoes-linhas-removidas {
+    padding-left: 8px;
+}
+
 .remover-linha-botao {
     border: 1px solid #dadce0;
     background-color: white;
