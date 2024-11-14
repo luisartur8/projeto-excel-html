@@ -109,7 +109,7 @@ localizarSubstituirReplaceAllButton.addEventListener('click', () => {
     const rows = infoTabela.rows;
 
     const regexFlags = upperLowerCheckbox.checked ? "g" : "gi";
-    const regex = regexCheckbox.checked ? new RegExp(valor, regexFlags) : null;
+    const regex = regexCheckbox.checked ? new RegExp(valor, regexFlags) : valor;
 
     for (let row of rows) {
         const cell = row.cells[indexAtualSearchReplace];

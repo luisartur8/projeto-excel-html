@@ -5,53 +5,197 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carregar Excel</title>
+    <script src="js/arrastarModais.js" defer></script>
+    <style>
+
+        #modalRemoveLinhas {
+            display: flex;
+            font-family: Arial, Helvetica, sans-serif;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            user-select: none;
+        }
+
+        .modal-remove-linhas-conteudo {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            background-color: white;
+        }
+
+        .remove-linha-bordinha {
+            margin: 25px;
+        }
+
+        #modalHeaderRemoveLinhas {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 25px 25px 0 25px;
+        }
+
+        #modalHeaderRemoveLinhas span {
+            display: inline-flex;
+            font-weight: normal;
+            font-size: 15px;
+            color: grey;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        #modalHeaderRemoveLinhas span:hover {
+            border: none;
+            background-color: #eeeeee;
+            padding: 5px;
+        }
+
+        .modal-secao-remover-quando-vazia {
+            display: flex;
+            row-gap: 10px;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #dadce0;
+            border-radius: 5px;
+            margin: 10px 0;
+            padding: 10px 5px;
+        }
+
+        .modal-secao-remover-quando-vazia2 {
+            display: flex;
+            row-gap: 10px;
+            flex-direction: column;
+            border: 1px solid #dadce0;
+            border-radius: 5px;
+            margin: 10px 0;
+            padding: 10px 5px;
+        }
+
+        .modal-secao-remover-quando-vazia2 button {
+            align-items: center;
+        }
+
+        .remover-linha-botao {
+            border: 1px solid #dadce0;
+            background-color: white;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-right: 8px;
+            margin-left: 8px;
+            padding: 8px 20px;
+            cursor: pointer;
+        }
+
+        .remover-linha-botao:hover {
+            background-color: rgb(240, 240, 240);
+        }
+
+        .remover-linha-botao:active {
+            background-color: rgb(220, 220, 220);
+        }
+
+    </style>
 </head>
 
 <body>
 
-    <table class="tabela">
-        <thead>
-            <tr>
-                <th>th</th>
-                <th>th</th>
-                <th>th</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>td</td>
-                <td>td</td>
-                <td>td</td>
-            </tr>
-            <tr>
-                <td>td2</td>
-                <td>td2</td>
-                <td>td2</td>
-            </tr>
-        </tbody>
-    </table>
+    <div id="modalRemoveLinhas">
+        <div class="modal-remove-linhas-conteudo draggable-modal">
+            <div id="modalHeaderRemoveLinhas" class="dragHandle">
+                <label>Remover linhas</label>
+                <span>X</span>
+            </div>
+            <div class="remove-linha-bordinha">
+                <div class="modal-secao-remover-quando-vazia">
+                    <label>Remover quando vazias:</label>
+                    <div>
+                        <button class="remover-linha-botao">Linhas</button>
+                        <button class="remover-linha-botao">Colunas</button>
+                    </div>
+                </div>
+                <div class="modal-secao-remover-quando-vazia2">
+                    <label>Quando vazias ao mesmo tempo:</label>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-nome-checkbox" type="checkbox">
+                                        nome
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-telefone-checkbox" type="checkbox">
+                                        telefone
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-telefone-checkbox" type="checkbox">
+                                        cpf_cnpj
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-telefone-checkbox" type="checkbox">
+                                        data_nascimento
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-telefone-checkbox" type="checkbox">
+                                        genero
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-telefone-checkbox" type="checkbox">
+                                        email
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-telefone-checkbox" type="checkbox">
+                                        anotacao
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="remover-linha-botao">Remover</button>
+                </div>
+            </div>
 
-    <button onclick="teste()">botao</button>
+        </div>
+    </div>
 
     <script>
-        function teste() {
-            let data = [];
-
-            const table = document.querySelector('.tabela');
-            console.log(table);
-            console.log(table.rows);
-
-            for (let row of table.rows) {
-                console.log(row);
-                let rowData = [];
-                for (let j = 2; j < row.cells.length; j++) { // Começa da terceira coluna
-                    rowData.push(row.cells[j].innerText);
-                }
-                data.push(rowData);
-            }
-
-            console.log(data);
-        }
     </script>
 
 </body>

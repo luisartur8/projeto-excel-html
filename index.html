@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/modalValidacoesTelefone.css">
     <link rel="stylesheet" href="css/modalValidacoesNascimento.css">
     <link rel="stylesheet" href="css/popupConfirmaDeleteColuna.css">
+    <link rel="stylesheet" href="css/modalRemoveLinhas.css">
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>-->
     <script src="libs/xlsx.full.min.js"></script>
     <script src="js/htmlContent.js" defer></script>
@@ -22,6 +23,7 @@
     <script src="js/modalLocalizarSubstituir.js" defer></script>
     <script src="js/modalValidacoesTelefone.js" defer></script>
     <script src="js/modalValidacoesNascimento.js" defer></script>
+    <script src="js/modalRemoveLinhas.js" defer></script>
     <script src="js/manipulaTable.js" defer></script>
     <script src="js/contentButtons.js" defer></script>
     <script src="js/validacao.js" defer></script>
@@ -51,9 +53,10 @@
                 <button id="button-baixar-planilha" class="button-padrao">Baixar planilha</button>
                 <button id="button-apaga-planilha" class="button-padrao">Apagar planilha</button>
                 <button class="button-padrao">Exportar planilha</button>
-                <button id="remove-linhas-vazias" class="button-padrao">Remover linhas vazias</button>
                 <button id="junta-ddd-telefone" class="button-padrao">Juntar DDD e telefone</button>
-                <button id="excluir-sem-cpj_cnpj-telefone" class="button-padrao">Excluir sem cpf_cnpj e telefone</button>
+                <button id="excluir-sem-cpj_cnpj-telefone" class="button-padrao">Excluir sem cpf_cnpj e
+                    telefone</button>
+                <button id="button-remove-linhas" class="button-padrao">Remover linhas</button>
             </div>
             <div id="table-excel" class="table-excel">
                 <div class="nenhuma-planilha">
@@ -231,6 +234,90 @@
                             src="assets/img/icon-lixeira.png">Fechar</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!--Modal para remoção de linhas-->
+    <div id="modalRemoveLinhas">
+        <div class="modal-remove-linhas-conteudo draggable-modal">
+            <div id="modalHeaderRemoveLinhas" class="dragHandle">
+                <label>Remover linhas</label>
+                <span class="close-modal-linhas-btn">X</span>
+            </div>
+            <div class="remove-linha-bordinha">
+                <div class="modal-secao-remover-quando-vazia">
+                    <label>Remover quando vazias:</label>
+                    <div>
+                        <button class="remover-linhas-vazias remover-linha-botao">Linhas</button>
+                        <button class="remover-colunas-vazias remover-linha-botao">Colunas</button>
+                    </div>
+                </div>
+                <div class="modal-secao-remover-quando-vazia2">
+                    <label>Quando vazias ao mesmo tempo:</label>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-linhas-nome-checkbox" type="checkbox">
+                                        nome
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-linhas-telefone-checkbox" type="checkbox">
+                                        telefone
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-linhas-cpf_cnpj-checkbox" type="checkbox">
+                                        cpf_cnpj
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-linhas-data_nascimento-checkbox" type="checkbox">
+                                        data_nascimento
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-linhas-genero-checkbox" type="checkbox">
+                                        genero
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-linhas-email-checkbox" type="checkbox">
+                                        email
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input class="modal-linhas-anotacao-checkbox" type="checkbox">
+                                        anotacao
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="remover-linhas-especificas remover-linha-botao">Remover</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
