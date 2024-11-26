@@ -31,6 +31,6 @@ function exportarParaExcel() {
         }
     }
 
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Tabela Exportada");
-    XLSX.writeFile(workbook, "Tabela_Exportada.xlsx");
+    XLSX.utils.book_append_sheet(workbook, worksheet, firstSheetName);
+    XLSX.writeFile(workbook, workbookName);
 }

@@ -5,6 +5,9 @@ const juntaDDDTelefone = document.getElementById('junta-ddd-telefone');
 const excluirSemCpfTelefone = document.getElementById('excluir-sem-cpj_cnpj-telefone');
 const buttonRemoveLinhas = document.getElementById('button-remove-linhas');
 
+const buttonMesclarColunas = document.getElementById('button-mesclar-colunas');
+const selectMesclarColunas = document.getElementById('select-mesclar-colunas');
+
 const tableExcel = document.getElementById('table-excel');
 const nenhumaPlanilha = document.getElementById('nenhuma-planilha');
 
@@ -26,12 +29,16 @@ function mudarTipoPlanilha() {
         const selectAtual = row.cells[i].querySelector('.selectAtual');
         if (tipo === 'cliente') {
             selectAtual.innerHTML = tipoCliente;
+            selectMesclarColunas.innerHTML = tipoCliente;
         } else if (tipo === 'lancamento') {
             selectAtual.innerHTML = tipoLancamento;
+            selectMesclarColunas.innerHTML = tipoLancamento;
         } else if (tipo === 'oportunidade') {
             selectAtual.innerHTML = tipoOportunidade;
+            selectMesclarColunas.innerHTML = tipoOportunidade;
         } else if (tipo === 'produtos') {
             selectAtual.innerHTML = tipoProdutos;
+            selectMesclarColunas.innerHTML = tipoProdutos;
         }
     }
 }
@@ -112,5 +119,61 @@ juntaDDDTelefone.addEventListener('click', () => {
 
     // Remover a coluna DDD após juntar os números
     //removeColumnByIndex(indexDDD[0]);
+
+});
+
+buttonMesclarColunas.addEventListener('click', () => {
+
+    if (!tableExcel.querySelector('table')) {
+        alert('Nenhuma planilha foi carregada!');
+        return;
+    }
+
+    const table = document.querySelector('.table-excel table');
+    const rows = table.rows;
+
+    // Pega os valores do select dentro do th
+    const headers = table.querySelectorAll('th');
+    const headerValuesArray = Array.from(headers).map(header => {
+        const select = header.querySelector('select');
+        return select ? select.value : null;
+    });
+
+    let indexHeader = [];
+    const selectSelecionado = selectMesclarColunas.value;
+
+    headerValuesArray.forEach((header, index) => {
+        if (header) {
+            if (header === selectSelecionado) {
+                indexHeader.push(index);
+            }
+        }
+    });
+
+    if (indexHeader.length === 0) {
+        return;
+    }
+
+    // Percorre cada coluna, joga os valores da ultima para a primeira '[0]' e apaga a ultima
+    for (let a = indexHeader.length - 1; a > 0; a--) {
+        for (let i = 0; i < rows.length; i++) {
+
+            const col1Index = indexHeader[0];
+            const col2Index = indexHeader[a];
+
+            if (col2Index < rows[i].cells.length) {
+                const celulaCol1 = rows[i].cells[col1Index];
+                const celulaCol2 = rows[i].cells[col2Index];
+
+                if (celulaCol1.innerHTML.trim() === '') {
+                    celulaCol1.innerHTML = celulaCol2.innerHTML;
+                }
+
+                rows[i].deleteCell(col2Index);
+            }
+
+        }
+
+    }
 
 });

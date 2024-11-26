@@ -1,6 +1,9 @@
 let selectedFile;
 const table = document.querySelector('.table-excel table');
 
+let workbookName;
+let firstSheetName;
+
 function addEventListeners() {
     document.getElementById('upload-planilha').addEventListener('change', function (event) {
         selectedFile = event.target.files[0];
@@ -22,7 +25,8 @@ function handleFileUpload() {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: 'array' });
 
-        const firstSheetName = workbook.SheetNames[0];
+        workbookName = selectedFile.name;
+        firstSheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[firstSheetName];
 
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
