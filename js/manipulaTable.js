@@ -195,70 +195,160 @@ function centerModal(modalContent) {
     modalContent.style.top = (windowHeight / 2 - modalHeight / 2) + "px";
 }
 
+function manterCelulaSelecionadaVisivel(celula) {
+    const posicoes = celula.getBoundingClientRect();
+    const top = posicoes.top;
+    const bottom = posicoes.bottom;
+    const right = posicoes.right;
+    const left = posicoes.left;
+
+    if (top < 0) {
+        celula.scrollIntoView({ block: "start"});
+    } else if (bottom > window.innerHeight) {
+        celula.scrollIntoView({ block: "end"});
+    } else if (left < 0) {
+        celula.scrollIntoView({ inline: "start"});
+    } else if (right > window.innerWidth) {
+        celula.scrollIntoView({ inline: "end"});
+    }
+}
+
+function moverCursorParaFinal(celula) {
+    const range = document.createRange(); // Cria um novo intervalo
+    const sel = window.getSelection(); // Obtém o objeto Selection (onde o cursor está)
+
+    range.selectNodeContents(celula); // Seleciona todo o conteúdo do elemento
+    range.collapse(false); // Colapsa o intervalo para o final do conteúdo
+
+    sel.removeAllRanges(); // Remove qualquer seleção anterior
+    sel.addRange(range); // Define o novo intervalo, movendo o cursor para o final
+}
+
 function addEventListenersCelulaSelecionada() {
     const table = document.querySelector('.table-excel table');
 
     if (!table) return;
 
     let keydownHandler;
+    let dblclickHandler;
 
     table.addEventListener('click', (e) => {
         const celula = e.target.closest('td');
         if (celula) {
-            // Remove a seleção anterior
-            if (celulaSelecionada && (celula != celulaSelecionada)) {
-                celulaSelecionada.classList.remove('selected-cell');
-                celulaSelecionada.contentEditable = "false";
-            }
 
             const indexColuna = Array.from(celula.parentNode.children).indexOf(celula);
             if (indexColuna === 0 || indexColuna === 1) {
                 return;
             }
 
+            // Remove a seleção anterior
+            if (celulaSelecionada && (celula != celulaSelecionada)) {
+                celulaSelecionada.classList.remove('selected-cell');
+                celulaSelecionada.classList.remove('selected-cell-editable');
+                celulaSelecionada.contentEditable = "inherit"; // Nota: No lugar de false usar inherit
+            }
+
             celulaSelecionada = celula;
             celulaSelecionada.classList.add('selected-cell');
-            celulaSelecionada.contentEditable = "true";
 
             if (keydownHandler) {
                 document.removeEventListener('keydown', keydownHandler);
             }
 
+            if (dblclickHandler) {
+                document.removeEventListener('dblclick', dblclickHandler);
+            }
+
+            dblclickHandler = (e) => {
+                if (celulaSelecionada.contentEditable !== "true") {
+                    celulaSelecionada.contentEditable = "true";
+                    celulaSelecionada.classList.add('selected-cell-editable');
+                    moverCursorParaFinal(celulaSelecionada);
+                }
+            }
+
             keydownHandler = (e) => {
                 if (!celulaSelecionada) return;
 
-                const linhaAtual = celulaSelecionada.parentElement;
+                const linhaAtual = celulaSelecionada.parentElement; // <tr>
                 const indexColuna = Array.from(linhaAtual.children).indexOf(celulaSelecionada);
+                let proximaCelula;
 
-                if (e.key === "Delete" && celulaSelecionada.classList.contains('selected-cell')) {
-                    celulaSelecionada.innerHTML = "";
-                    celulaSelecionada.style.backgroundColor = "white";
-                    return;
-                }
+                if (celulaSelecionada.classList.contains('selected-cell')) {
+                    if (celulaSelecionada.contentEditable === 'inherit') { // Não está sendo editada no momento
 
-                if (e.key === "Enter" && celulaSelecionada.classList.contains('selected-cell')) {
-                    e.preventDefault(); // Evitar a ação padrão do Enter
-                    const linhaAtual = celulaSelecionada.parentElement;
-                    const proximaLinha = linhaAtual.nextElementSibling;
+                        e.preventDefault();
 
-                    if (proximaLinha) {
-                        const indexColuna = Array.from(linhaAtual.children).indexOf(celulaSelecionada);
-                        const proximaCelula = proximaLinha.children[indexColuna];
+                        if (e.key === "Delete" || e.key === "Backspace") {
+                            celulaSelecionada.innerHTML = "";
+                            celulaSelecionada.style.backgroundColor = "white";
+                            return;
+                        }
 
+                        if (e.key === 'ArrowUp') {
+                            const linhaAcima = linhaAtual.previousElementSibling;
+                            if (linhaAcima) {
+                                proximaCelula = linhaAcima.children[indexColuna];
+                            }
+                        } else if (e.key === 'ArrowLeft') {
+                            if ((indexColuna !== 2)) {
+                                proximaCelula = linhaAtual.cells[indexColuna - 1];
+                            }
+                        } else if (e.key === 'ArrowDown') {
+                            const proximaLinha = linhaAtual.nextElementSibling;
+                            if (proximaLinha) {
+                                proximaCelula = proximaLinha.children[indexColuna];
+                            }
+                        } else if (e.key === 'ArrowRight' || e.key === 'Tab') {
+                            if ((indexColuna)) {
+                                proximaCelula = linhaAtual.cells[indexColuna + 1];
+                            }
+                        } /*else if (e.key.match('/^[\w-_.]*$/g')) {
+                            celulaSelecionada.contentEditable = "true";
+                            celulaSelecionada.innerHTML = '';
+                            moverCursorParaFinal(celulaSelecionada);
+                            return;
+                        }*/
+
+                        // Se existe uma proxima celula, ela vira a atual
                         if (proximaCelula) {
                             celulaSelecionada.classList.remove('selected-cell');
-                            celulaSelecionada.contentEditable = "false";
-
+                            celulaSelecionada.classList.remove('selected-cell-editable');
+                            celulaSelecionada.contentEditable = "inherit";
                             celulaSelecionada = proximaCelula;
                             celulaSelecionada.classList.add('selected-cell');
                         }
+
+                    }
+
+                }
+
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    const proximaLinha = linhaAtual.nextElementSibling;
+                    if (proximaLinha) {
+                        proximaCelula = proximaLinha.children[indexColuna];
+                    }
+                    if (celulaSelecionada.contentEditable === 'inherit') {
+                        celulaSelecionada.contentEditable = "true";
+                        celulaSelecionada.classList.add('selected-cell-editable');
+                        moverCursorParaFinal(celulaSelecionada);
+                    } else if (proximaCelula) {
+                        celulaSelecionada.classList.remove('selected-cell');
+                        celulaSelecionada.classList.remove('selected-cell-editable');
+                        celulaSelecionada.contentEditable = "inherit";
+                        celulaSelecionada = proximaCelula;
+                        celulaSelecionada.classList.add('selected-cell');
                     }
                 }
 
+                manterCelulaSelecionadaVisivel(celulaSelecionada);
                 celulaSelecionada.focus();
+
             };
 
             document.addEventListener('keydown', keydownHandler);
+            document.addEventListener('dblclick', dblclickHandler);
         }
     });
 }

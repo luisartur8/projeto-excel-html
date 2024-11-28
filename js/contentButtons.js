@@ -150,11 +150,11 @@ buttonMesclarColunas.addEventListener('click', () => {
         }
     });
 
-    if (indexHeader.length === 0) {
+    if (indexHeader.length < 2) {
         return;
     }
 
-    // Percorre cada coluna, joga os valores da ultima para a primeira '[0]' e apaga a ultima
+    // Percorre cada coluna selecionada, joga os valores da ultima para a primeira e apaga a ultima
     for (let a = indexHeader.length - 1; a > 0; a--) {
         for (let i = 0; i < rows.length; i++) {
 

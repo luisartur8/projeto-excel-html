@@ -7,6 +7,8 @@ const inputReplace = document.querySelector('.modal-input-replace');
 const upperLowerCheckbox = document.querySelector('.modal-search-upper-lower-checkbox');
 const regexCheckbox = document.querySelector('.modal-search-regex-checkbox');
 
+const campoInformacao = document.querySelector('.campo-mostrar-informacoes-search');
+
 const botaoAcoes = document.querySelector('.botao-acoes');
 
 const localizarSubstituirCloseButton = document.querySelector('#modalHeaderLocalizarSubstituir span');

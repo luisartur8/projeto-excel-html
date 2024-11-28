@@ -3,6 +3,7 @@
     border-radius: 5px;
     overflow-y: auto;
     max-height: 63vh;
+    user-select: none;
 }
 
 .nenhuma-planilha {
@@ -69,5 +70,10 @@
 
 .selected-cell {
     outline: 2px solid #0078D4;
+    border-radius: 3px;
+}
+
+.selected-cell-editable {
+    outline: 2px solid #00ad09;
     border-radius: 3px;
 }
