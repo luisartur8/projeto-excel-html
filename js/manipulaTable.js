@@ -299,28 +299,30 @@ function addEventListenersCelulaSelecionada() {
                             if (proximaLinha) {
                                 proximaCelula = proximaLinha.children[indexColuna];
                             }
-                        } else if (e.key === 'ArrowRight' || e.key === 'Tab') {
+                        } else if (e.key === 'ArrowRight') {
                             if ((indexColuna)) {
                                 proximaCelula = linhaAtual.cells[indexColuna + 1];
                             }
-                        } /*else if (e.key.match('/^[\w-_.]*$/g')) {
-                            celulaSelecionada.contentEditable = "true";
-                            celulaSelecionada.innerHTML = '';
-                            moverCursorParaFinal(celulaSelecionada);
-                            return;
-                        }*/
+                        } else if (/^[\x20-\x7E\xA0-\xFF\u0100-\uFFFF]*$/.test(e.key)) { // Letras, numeros, outros caracs tipo -, +, etc
+                            if (e.key.length === 1 && celulaSelecionada.contentEditable === 'inherit') { // Length 1, então: Sem Enter, Backspace, etc
+                                celulaSelecionada.contentEditable = "true";
+                                celulaSelecionada.classList.add('selected-cell-editable');
+                                celulaSelecionada.innerHTML = e.key;
+                                moverCursorParaFinal(celulaSelecionada);
+                                return;
+                            }
 
-                        // Se existe uma proxima celula, ela vira a atual
-                        if (proximaCelula) {
-                            celulaSelecionada.classList.remove('selected-cell');
-                            celulaSelecionada.classList.remove('selected-cell-editable');
-                            celulaSelecionada.contentEditable = "inherit";
-                            celulaSelecionada = proximaCelula;
-                            celulaSelecionada.classList.add('selected-cell');
                         }
 
                     }
 
+                }
+
+                if (e.key === "Tab") {
+                    e.preventDefault();
+                    if ((indexColuna)) {
+                        proximaCelula = linhaAtual.cells[indexColuna + 1];
+                    }
                 }
 
                 if (e.key === "Enter") {
@@ -333,13 +335,17 @@ function addEventListenersCelulaSelecionada() {
                         celulaSelecionada.contentEditable = "true";
                         celulaSelecionada.classList.add('selected-cell-editable');
                         moverCursorParaFinal(celulaSelecionada);
-                    } else if (proximaCelula) {
-                        celulaSelecionada.classList.remove('selected-cell');
-                        celulaSelecionada.classList.remove('selected-cell-editable');
-                        celulaSelecionada.contentEditable = "inherit";
-                        celulaSelecionada = proximaCelula;
-                        celulaSelecionada.classList.add('selected-cell');
+                        return;
                     }
+                }
+
+                // Se existe uma proxima celula, ela vira a atual
+                if (proximaCelula) {
+                    celulaSelecionada.classList.remove('selected-cell');
+                    celulaSelecionada.classList.remove('selected-cell-editable');
+                    celulaSelecionada.contentEditable = "inherit";
+                    celulaSelecionada = proximaCelula;
+                    celulaSelecionada.classList.add('selected-cell');
                 }
 
                 manterCelulaSelecionadaVisivel(celulaSelecionada);
