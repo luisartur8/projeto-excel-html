@@ -69,11 +69,10 @@
 }
 
 .selected-cell {
-    outline: 2px solid #0078D4;
-    border-radius: 3px;
+    box-shadow:0px 0px 0px 1px #0063af inset;
+    border: 1px solid #0063af;
 }
 
 .selected-cell-editable {
-    outline: 2px solid #00ad09;
-    border-radius: 3px;
+    outline: 2px solid #a8c7fa;
 }
