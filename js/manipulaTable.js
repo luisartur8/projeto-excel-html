@@ -196,21 +196,29 @@ function centerModal(modalContent) {
 }
 
 function manterCelulaSelecionadaVisivel(celula) {
+
     const posicoes = celula.getBoundingClientRect();
     const top = posicoes.top;
     const bottom = posicoes.bottom;
     const right = posicoes.right;
     const left = posicoes.left;
 
-    if (top < 0) {
+    if (top < 212) { // Como pega esse 212 dinamicamente
         celula.scrollIntoView({ block: "start"});
-    } else if (bottom > window.innerHeight) {
-        celula.scrollIntoView({ block: "end"});
-    } else if (left < 0) {
-        celula.scrollIntoView({ inline: "start"});
-    } else if (right > window.innerWidth) {
-        celula.scrollIntoView({ inline: "end"});
     }
+
+    if (left < 0) {
+        celula.scrollIntoView({ block: "nearest", inline: "start"});
+    }
+
+    if (bottom > window.innerHeight) {
+        celula.scrollIntoView({ block: "end"});
+    }
+
+    if (right > window.innerWidth) {
+        celula.scrollIntoView({ block: "nearest", inline: "end"});
+    }
+
 }
 
 function moverCursorParaFinal(celula) {
@@ -222,6 +230,13 @@ function moverCursorParaFinal(celula) {
 
     sel.removeAllRanges(); // Remove qualquer seleção anterior
     sel.addRange(range); // Define o novo intervalo, movendo o cursor para o final
+}
+
+function removeSelecaoTexto() {
+    const selection = window.getSelection();
+    if (!selection.isCollapsed) {
+        selection.removeAllRanges();
+    }
 }
 
 function addEventListenersCelulaSelecionada() {
@@ -246,6 +261,7 @@ function addEventListenersCelulaSelecionada() {
                 celulaSelecionada.classList.remove('selected-cell');
                 celulaSelecionada.classList.remove('selected-cell-editable');
                 celulaSelecionada.contentEditable = "inherit"; // Nota: No lugar de false usar inherit
+                removeSelecaoTexto();
             }
 
             celulaSelecionada = celula;
@@ -346,6 +362,7 @@ function addEventListenersCelulaSelecionada() {
                     celulaSelecionada.contentEditable = "inherit";
                     celulaSelecionada = proximaCelula;
                     celulaSelecionada.classList.add('selected-cell');
+                    removeSelecaoTexto();
                 }
 
                 manterCelulaSelecionadaVisivel(celulaSelecionada);
