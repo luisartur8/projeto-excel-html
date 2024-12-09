@@ -43,4 +43,6 @@ function configurarModalDataNascimento() {
     seletorNascimentoFinal3.value = 'yyyy';
 
     centerModal(modalNascimentoContent);
+
+    removeCelulaSelecionada();
 }

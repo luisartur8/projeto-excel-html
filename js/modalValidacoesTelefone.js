@@ -81,4 +81,6 @@ function configurarModalTelefone() {
     checkboxTelefoneInserirDDD.checked = false;
 
     centerModal(modalTelefoneContent);
+
+    removeCelulaSelecionada();
 }

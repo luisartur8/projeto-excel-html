@@ -5,198 +5,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carregar Excel</title>
-    <script src="js/arrastarModais.js" defer></script>
-    <style>
-
-        #modalRemoveLinhas {
-            display: flex;
-            font-family: Arial, Helvetica, sans-serif;
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            z-index: 10;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            user-select: none;
-        }
-
-        .modal-remove-linhas-conteudo {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.2);
-            position: absolute;
-            background-color: white;
-        }
-
-        .remove-linha-bordinha {
-            margin: 25px;
-        }
-
-        #modalHeaderRemoveLinhas {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 25px 25px 0 25px;
-        }
-
-        #modalHeaderRemoveLinhas span {
-            display: inline-flex;
-            font-weight: normal;
-            font-size: 15px;
-            color: grey;
-            justify-content: center;
-            align-items: center;
-            padding: 5px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        #modalHeaderRemoveLinhas span:hover {
-            border: none;
-            background-color: #eeeeee;
-            padding: 5px;
-        }
-
-        .modal-secao-remover-quando-vazia {
-            display: flex;
-            row-gap: 10px;
-            flex-direction: column;
-            align-items: center;
-            border: 1px solid #dadce0;
-            border-radius: 5px;
-            margin: 10px 0;
-            padding: 10px 5px;
-        }
-
-        .modal-secao-remover-quando-vazia2 {
-            display: flex;
-            row-gap: 10px;
-            flex-direction: column;
-            border: 1px solid #dadce0;
-            border-radius: 5px;
-            margin: 10px 0;
-            padding: 10px 5px;
-        }
-
-        .modal-secao-remover-quando-vazia2 button {
-            align-items: center;
-        }
-
-        .remover-linha-botao {
-            border: 1px solid #dadce0;
-            background-color: white;
-            font-size: 14px;
-            border-radius: 5px;
-            margin-right: 8px;
-            margin-left: 8px;
-            padding: 8px 20px;
-            cursor: pointer;
-        }
-
-        .remover-linha-botao:hover {
-            background-color: rgb(240, 240, 240);
-        }
-
-        .remover-linha-botao:active {
-            background-color: rgb(220, 220, 220);
-        }
-
-    </style>
 </head>
 
 <body>
 
-    <div id="modalRemoveLinhas">
-        <div class="modal-remove-linhas-conteudo draggable-modal">
-            <div id="modalHeaderRemoveLinhas" class="dragHandle">
-                <label>Remover linhas</label>
-                <span>X</span>
-            </div>
-            <div class="remove-linha-bordinha">
-                <div class="modal-secao-remover-quando-vazia">
-                    <label>Remover quando vazias:</label>
-                    <div>
-                        <button class="remover-linha-botao">Linhas</button>
-                        <button class="remover-linha-botao">Colunas</button>
-                    </div>
-                </div>
-                <div class="modal-secao-remover-quando-vazia2">
-                    <label>Quando vazias ao mesmo tempo:</label>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input class="modal-nome-checkbox" type="checkbox">
-                                        nome
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input class="modal-telefone-checkbox" type="checkbox">
-                                        telefone
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input class="modal-telefone-checkbox" type="checkbox">
-                                        cpf_cnpj
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input class="modal-telefone-checkbox" type="checkbox">
-                                        data_nascimento
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input class="modal-telefone-checkbox" type="checkbox">
-                                        genero
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input class="modal-telefone-checkbox" type="checkbox">
-                                        email
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input class="modal-telefone-checkbox" type="checkbox">
-                                        anotacao
-                                    </label>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <label class="label-informacoes-linhas-removidas">aa</label>
-                    <button class="remover-linha-botao">Remover</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
+    <button onclick="aaa()">aaa</button>
+    
+    <script src="js/validacao.js"></script>
     <script>
+
+        function aaa() {
+
+            /*
+
+            let percentual = "1.2-345";
+            if (!/^\d+([.,]\d+)?$/.test(percentual) || (percentual.match(/[.,]/g) || []).length > 1) {
+                console.log("invalido");
+                console.log(percentual);
+            } else {
+                console.log("valido");
+                console.log(percentual);
+            }
+
+            if (percentual.includes('-')) {
+                console.log("invalido");
+                console.log(percentual);
+            } else {
+                console.log("valido");
+                console.log(percentual);
+            }
+
+            console.log(corrigirPercentual("abc123,45.67-xyz") + " abc123,45.67-xyz");   // true
+            console.log(corrigirPercentual("--..-") + " --..-");   // true
+            console.log(corrigirPercentual("..") + " ..");   // true
+            console.log(corrigirPercentual(",,") + " ,,");   // true
+            console.log(corrigirPercentual(".") + " .");   // true
+            console.log(corrigirPercentual(",") + " ,");   // true
+            console.log(corrigirPercentual("12.34") + " 12.34");   // true
+            console.log(corrigirPercentual("12,34") + " 12,34");   // true
+            console.log(corrigirPercentual(".12.1") + " .12.1");      // true
+            console.log(corrigirPercentual("100%") + " 100%");    // true
+            console.log(corrigirPercentual("0.99") + " 0.99");    // true
+            console.log(corrigirPercentual("0,99") + " 0,99");    // true
+            console.log(corrigirPercentual("100,1") + " 100,1");   // false
+            console.log(corrigirPercentual("123") + " 123");     // false
+            console.log(corrigirPercentual("10.10") + " 10.10");  // false
+            console.log(corrigirPercentual("10,100") + " 10,100");  // false
+            console.log(corrigirPercentual("50%") + " 50%");     // true
+            console.log(corrigirPercentual("123%") + " 123%");    // false
+
+            */
+
+        }
+
     </script>
 
 </body>

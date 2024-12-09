@@ -177,9 +177,5 @@ function configurarModalSelecionarSubstituir(index) {
     localizarSubstituirReplaceAllButton.disabled = true;
 
     // Celula da table da planilha
-    if (celulaSelecionada) {
-        celulaSelecionada.classList.remove('selected-cell');
-        celulaSelecionada.contentEditable = "false";
-        celulaSelecionada = null;
-    }
+    removeCelulaSelecionada();
 }

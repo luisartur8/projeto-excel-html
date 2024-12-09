@@ -30,6 +30,8 @@ function configurarModalRemoveLinhas() {
     informacaoLinhas.innerHTML = '';
 
     centerModal(modalRemoverLinhasConteudo);
+
+    removeCelulaSelecionada();
 }
 
 btnOpenModalLinhas.addEventListener('click', () => {
@@ -121,6 +123,7 @@ btnRemoverColunasVazias.addEventListener('click', () => {
 
 });
 
+// Para remover a linha não pode ter nenhum valor nas celulas que estão selecionadas no modal
 btnRemoverLinhasEspecificas.addEventListener('click', () => {
 
     if (!tableExcel.querySelector('table')) {

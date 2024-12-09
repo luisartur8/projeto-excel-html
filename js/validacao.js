@@ -138,7 +138,7 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
     data_nascimento = data_nascimento.replace(/\D/g, '/'); // Tudo o que não é número vira barra
 
     const numeroBarras = (data_nascimento.match(/\//g) || []).length; // Quantidade de barras
-    
+
     if (numeroBarras != 2) {
         return '';
     }
@@ -173,24 +173,24 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
     let dia, mes, ano;
 
     if (regex[formatoOrigem]) {
-      const match = data_nascimento.match(regex[formatoOrigem]);
-      if (match) {
-        if (formatoOrigem === 'dd/mm/yyyy' || formatoOrigem === 'dd/mm/yy') {
-            [_, dia, mes, ano] = match;
-        } else if (formatoOrigem === 'dd/yyyy/mm' || formatoOrigem === 'dd/yy/mm') {
-            [_, dia, ano, mes] = match;
-        } else if (formatoOrigem === 'mm/dd/yyyy' || formatoOrigem === 'mm/dd/yy') {
-            [_, mes, dia, ano] = match;
-        } else if (formatoOrigem === 'yyyy/dd/mm' || formatoOrigem === 'yy/dd/mm') {
-            [_, ano, dia, mes] = match;
-        } else if (formatoOrigem === 'mm/yyyy/dd' || formatoOrigem === 'mm/yy/dd') {
-            [_, mes, ano, dia] = match;
-        } else if (formatoOrigem === 'yyyy/mm/dd' || formatoOrigem === 'yy/mm/dd') {
-            [_, ano, mes, dia] = match;    
+        const match = data_nascimento.match(regex[formatoOrigem]);
+        if (match) {
+            if (formatoOrigem === 'dd/mm/yyyy' || formatoOrigem === 'dd/mm/yy') {
+                [_, dia, mes, ano] = match;
+            } else if (formatoOrigem === 'dd/yyyy/mm' || formatoOrigem === 'dd/yy/mm') {
+                [_, dia, ano, mes] = match;
+            } else if (formatoOrigem === 'mm/dd/yyyy' || formatoOrigem === 'mm/dd/yy') {
+                [_, mes, dia, ano] = match;
+            } else if (formatoOrigem === 'yyyy/dd/mm' || formatoOrigem === 'yy/dd/mm') {
+                [_, ano, dia, mes] = match;
+            } else if (formatoOrigem === 'mm/yyyy/dd' || formatoOrigem === 'mm/yy/dd') {
+                [_, mes, ano, dia] = match;
+            } else if (formatoOrigem === 'yyyy/mm/dd' || formatoOrigem === 'yy/mm/dd') {
+                [_, ano, mes, dia] = match;
+            }
+        } else {
+            return '';
         }
-      } else {
-        return '';
-      }
     } else {
         return '';
     }
@@ -213,7 +213,7 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
     } else if (ano.length === 4 && (formatoFinal.match(/y/g) || []).length === 2) {
         ano = ano.slice(-2);
     }
-  
+
     let dataFormatada;
 
     if (formatoFinal === 'dd/mm/yyyy' || formatoFinal === 'dd/mm/yy') {
@@ -227,11 +227,11 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
     } else if (formatoFinal === 'mm/yyyy/dd' || formatoFinal === 'mm/yy/dd') {
         dataFormatada = `${mes}/${ano}/${dia}`;
     } else if (formatoFinal === 'yyyy/mm/dd' || formatoFinal === 'yy/mm/dd') {
-        dataFormatada = `${ano}/${mes}/${dia}`;        
+        dataFormatada = `${ano}/${mes}/${dia}`;
     } else {
         return '';
     }
-  
+
     return dataFormatada;
 
 }
@@ -434,4 +434,86 @@ function isValidCNPJ(cnpj) {
     } catch (error) {
         return false; // Se houver um erro, retorna falso
     }
+}
+
+// tipoLancamento:
+
+function corrigirValor_venda(venda) {
+    console.log('valor_venda');
+}
+
+function corrigirValor_resgate(resgate) {
+    console.log('valor_resgate');
+}
+
+function corrigirItem_venda(item) {
+    console.log('item_venda');
+}
+
+function corrigirData_lancamento(item) {
+    console.log('data_lancamento');
+}
+
+function corrigirCodigo_vendedor(item) {
+    console.log('codigo_vendedor');
+}
+
+// tipoOportunidade:
+
+function corrigirBonus_valor(valor) {
+    valor = arrumaFloat(valor);
+    if (percentual === '') {
+        return '';
+    }
+    return +valor >= 0 ? `R$ ${valor.replace('.', ',')}` : "";
+}
+
+function corrigirBonus_validade(validade) {
+    validade = arrumaFloat(validade);
+    if (validade === '') {
+        return '';
+    }
+    return +validade >= 0 ? validade.replace('.', ',') : "";
+}
+
+// tipoProdutos:
+
+// Validação codigo SKU produtos
+function corrigirCodigo(codigo) {
+    codigo = codigo.toString();
+    return codigo.replace(/[^A-Za-z0-9./-]/g, "") === codigo ? codigo : "";
+}
+
+function arrumaFloat(valor) {
+    // Excluir o que não for [0-9] (.) (,) (-)
+    valor = valor.trim().replace(/[^0-9.,-]/g, '');
+
+    // Não permite valores negativos
+    if (valor.includes('-')) {
+        return "";
+    }
+
+    // Permite apenas um ponto ou uma virgula, nunca os dois, com pelo menos um numero antes e depois
+    if (!/^\d+([.,]\d+)?$/.test(valor) || (valor.match(/[.,]/g) || []).length > 1) {
+        return "";
+    }
+
+    valor = valor.replace(',', '.');
+    return (parseFloat(parseFloat(valor).toFixed(2))).toString();
+}
+
+function corrigirPercentual(percentual) {
+    percentual = arrumaFloat(percentual);
+    if (percentual === '') {
+        return '';
+    }
+    return +percentual >= 0 && +percentual <= 100 ? percentual.replace('.', ',') : "";
+}
+
+function corrigirValidade(validade) {
+    validade = arrumaFloat(validade);
+    if (validade === '') {
+        return '';
+    }
+    return +validade >= 0 ? validade.replace('.', ',') : "";
 }

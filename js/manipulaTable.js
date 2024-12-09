@@ -85,6 +85,12 @@ function removeColumnModal(button) {
     modalPopUpDeletaColuna.focus();
     centerModal(popUpExclusaoConteudo);
     removeColumnAtualIndex = capturarInfoTh(button).index;
+    if (celulaSelecionada) {
+        celulaSelecionada.classList.remove('selected-cell');
+        celulaSelecionada.classList.remove('selected-cell-editable');
+        celulaSelecionada.contentEditable = "inherit";
+        celulaSelecionada = null;
+    }
 }
 
 function apagaLinhaVermelha(button) {
@@ -153,6 +159,7 @@ function executarValidacao(index, rows, comboBoxName) {
 
 function validarCelula(dado, comboBoxName) {
     switch (comboBoxName) {
+        // Clientes
         case 'nome':
             return corrigirNome(dado);
         case 'telefone':
@@ -171,6 +178,29 @@ function validarCelula(dado, comboBoxName) {
             return corrigirDDD(dado);
         case 'corrigirTelefoneSemDDD':
             return corrigirTelefoneSemDDD(dado);
+        // Lançamento
+        case 'valor_venda':
+            return corrigirValor_venda(dado);
+        case 'valor_resgate':
+            return corrigirValor_resgate(dado);
+        case 'item_venda':
+            return corrigirItem_venda(dado);
+        case 'data_lancamento':
+            return corrigirData_lancamento(dado);
+        case 'codigo_vendedor':
+            return corrigirCodigo_vendedor(dado);
+        // Oportunidade
+        case 'bonus_valor':
+            return corrigirBonus_valor(dado);
+        case 'bonus_validade':
+            return corrigirBonus_validade(dado);
+        // Produtos
+        case 'codigo':
+            return corrigirCodigo(dado);
+        case 'percentual':
+            return corrigirPercentual(dado);
+        case 'validade':
+            return corrigirValidade(dado);
         default:
             return dado;
     }
@@ -204,21 +234,30 @@ function manterCelulaSelecionadaVisivel(celula) {
     const left = posicoes.left;
 
     if (top < 212) { // Como pega esse 212 dinamicamente
-        celula.scrollIntoView({ block: "start"});
+        celula.scrollIntoView({ block: "start" });
     }
 
     if (left < 0) {
-        celula.scrollIntoView({ block: "nearest", inline: "start"});
+        celula.scrollIntoView({ block: "nearest", inline: "start" });
     }
 
     if (bottom > window.innerHeight) {
-        celula.scrollIntoView({ block: "end"});
+        celula.scrollIntoView({ block: "end" });
     }
 
     if (right > window.innerWidth) {
-        celula.scrollIntoView({ block: "nearest", inline: "end"});
+        celula.scrollIntoView({ block: "nearest", inline: "end" });
     }
 
+}
+
+function removeCelulaSelecionada() {
+    if (celulaSelecionada) {
+        celulaSelecionada.classList.remove('selected-cell');
+        celulaSelecionada.classList.remove('selected-cell-editable');
+        celulaSelecionada.contentEditable = "inherit";
+        celulaSelecionada = null;
+    }
 }
 
 function moverCursorParaFinal(celula) {
@@ -299,9 +338,7 @@ function addEventListenersCelulaSelecionada() {
                             celulaSelecionada.innerHTML = "";
                             celulaSelecionada.style.backgroundColor = "white";
                             return;
-                        }
-
-                        if (e.key === 'ArrowUp') {
+                        } else if (e.key === 'ArrowUp') {
                             const linhaAcima = linhaAtual.previousElementSibling;
                             if (linhaAcima) {
                                 proximaCelula = linhaAcima.children[indexColuna];
@@ -318,6 +355,18 @@ function addEventListenersCelulaSelecionada() {
                         } else if (e.key === 'ArrowRight') {
                             if ((indexColuna)) {
                                 proximaCelula = linhaAtual.cells[indexColuna + 1];
+                            }
+                        } else if (e.ctrlKey) {
+                            if (e.key === 'c' || e.key === 'C') {
+                                navigator.clipboard.writeText(celulaSelecionada.innerText);
+                            } else if (e.key === 'v' || e.key === 'V') {
+                                navigator.clipboard
+                                    .readText()
+                                    .then(
+                                        (clipText) => (celulaSelecionada.innerText = clipText)
+                                    );
+                            } else if (e.key === 'z' || e.key === 'Z') {
+                                console.log('Ctrl + Z');
                             }
                         } else if (/^[\x20-\x7E\xA0-\xFF\u0100-\uFFFF]*$/.test(e.key)) { // Letras, numeros, outros caracs tipo -, +, etc
                             if (e.key.length === 1 && celulaSelecionada.contentEditable === 'inherit') { // Length 1, então: Sem Enter, Backspace, etc
