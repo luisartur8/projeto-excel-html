@@ -48,6 +48,18 @@ function inserirNovaColuna(button, lado) {
     const novaCelulaHeader = document.createElement('th');
     novaCelulaHeader.innerHTML = headerContentHTML;
 
+    const tipo = tipoPlanilha.value;
+
+    if (tipo === 'cliente') {
+        novaCelulaHeader.querySelector('.selectAtual').innerHTML = tipoCliente;
+    } else if (tipo === 'lancamento') {
+        novaCelulaHeader.querySelector('.selectAtual').innerHTML = tipoLancamento;
+    } else if (tipo === 'oportunidade') {
+        novaCelulaHeader.querySelector('.selectAtual').innerHTML = tipoOportunidade;
+    } else if (tipo === 'produtos') {
+        novaCelulaHeader.querySelector('.selectAtual').innerHTML = tipoProdutos;
+    }
+
     const headerRow = rows[0];
     headerRow.insertBefore(novaCelulaHeader, rows[0].cells[index]);
 
