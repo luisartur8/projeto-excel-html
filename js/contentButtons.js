@@ -2,8 +2,8 @@ const buttonBaixaPlanilha = document.getElementById('button-baixar-planilha');
 const buttonApaga = document.getElementById('button-apaga-planilha');
 //
 const juntaDDDTelefone = document.getElementById('junta-ddd-telefone');
-const excluirSemCpfTelefone = document.getElementById('excluir-sem-cpj_cnpj-telefone');
 const buttonRemoveLinhas = document.getElementById('button-remove-linhas');
+const buttonModeloPadrao = document.getElementById('button-modelo-padrao');
 
 const buttonMesclarColunas = document.getElementById('button-mesclar-colunas');
 const selectMesclarColunas = document.getElementById('select-mesclar-colunas');
@@ -119,6 +119,128 @@ juntaDDDTelefone.addEventListener('click', () => {
 
     // Remover a coluna DDD após juntar os números
     //removeColumnByIndex(indexDDD[0]);
+
+});
+
+buttonModeloPadrao.addEventListener('click', () => {
+
+    if (!tableExcel.querySelector('table')) {
+        alert('Nenhuma planilha foi carregada!');
+        return;
+    }
+
+    const table = document.querySelector('.table-excel table');
+    const rows = table.rows;
+
+    const tipo = tipoPlanilha.value;
+
+    // Pega o valor do select dentro do th
+    let headers = table.querySelectorAll('th');
+    const headerValuesArray = Array.from(headers).map(header => {
+        const select = header.querySelector('select');
+        return select ? select.value : null;
+    });
+
+    let indexHeader = {};
+
+    let colunasRepetidas = false;
+
+    headerValuesArray.forEach((header, index) => {
+        if (header) {
+            if (!indexHeader[header]) {
+                indexHeader[header] = [];
+            }
+            indexHeader[header].push(index);
+            if (indexHeader[header].length > 1) {
+                colunasRepetidas = true;
+            }
+        }
+    });
+
+    if (colunasRepetidas) {
+        alert('Não é permitido colunas com mesmo nome');
+        return;
+    }
+
+    let ordem = [];
+
+    if (tipo === 'cliente') {
+        ordem = [
+            ...(Array.isArray(indexHeader.nome) ? indexHeader.nome : [-1]),
+            ...(Array.isArray(indexHeader.telefone) ? indexHeader.telefone : [-1]),
+            ...(Array.isArray(indexHeader.cpf_cnpj) ? indexHeader.cpf_cnpj : [-1]),
+            ...(Array.isArray(indexHeader.data_nascimento) ? indexHeader.data_nascimento : [-1]),
+            ...(Array.isArray(indexHeader.genero) ? indexHeader.genero : [-1]),
+            ...(Array.isArray(indexHeader.email) ? indexHeader.email : [-1]),
+            ...(Array.isArray(indexHeader.anotacao) ? indexHeader.anotacao : [-1]),
+            ...(Array.isArray(indexHeader.DDD) ? indexHeader.DDD : [-1])
+        ];
+    } else if (tipo === 'lancamento') {
+        ordem = [
+            ...(Array.isArray(indexHeader.nome) ? indexHeader.nome : [-1]),
+            ...(Array.isArray(indexHeader.telefone) ? indexHeader.telefone : [-1]),
+            ...(Array.isArray(indexHeader.cpf_cnpj) ? indexHeader.cpf_cnpj : [-1]),
+            ...(Array.isArray(indexHeader.valor_venda) ? indexHeader.valor_venda : [-1]),
+            ...(Array.isArray(indexHeader.valor_resgate) ? indexHeader.valor_resgate : [-1]),
+            ...(Array.isArray(indexHeader.anotacao) ? indexHeader.anotacao : [-1]),
+            ...(Array.isArray(indexHeader.item_venda) ? indexHeader.item_venda : [-1]),
+            ...(Array.isArray(indexHeader.data_lancamento) ? indexHeader.data_lancamento : [-1]),
+            ...(Array.isArray(indexHeader.nome_vendedor) ? indexHeader.nome_vendedor : [-1]),
+            ...(Array.isArray(indexHeader.codigo_vendedor) ? indexHeader.codigo_vendedor : [-1]),
+            ...(Array.isArray(indexHeader.DDD) ? indexHeader.DDD : [-1])
+        ];
+    } else if (tipo === 'oportunidade') {
+        ordem = [
+            ...(Array.isArray(indexHeader.nome) ? indexHeader.nome : [-1]),
+            ...(Array.isArray(indexHeader.telefone) ? indexHeader.telefone : [-1]),
+            ...(Array.isArray(indexHeader.cpf_cnpj) ? indexHeader.cpf_cnpj : [-1]),
+            ...(Array.isArray(indexHeader.data_nascimento) ? indexHeader.data_nascimento : [-1]),
+            ...(Array.isArray(indexHeader.genero) ? indexHeader.genero : [-1]),
+            ...(Array.isArray(indexHeader.email) ? indexHeader.email : [-1]),
+            ...(Array.isArray(indexHeader.anotacao) ? indexHeader.anotacao : [-1]),
+            ...(Array.isArray(indexHeader.DDD) ? indexHeader.DDD : [-1]),
+            ...(Array.isArray(indexHeader.bonus_valor) ? indexHeader.bonus_valor : [-1]),
+            ...(Array.isArray(indexHeader.bonus_validade) ? indexHeader.bonus_validade : [-1])
+        ];
+    } else if (tipo === 'produtos') {
+        ordem = [
+            ...(Array.isArray(indexHeader.codigo) ? indexHeader.codigo : [-1]),
+            ...(Array.isArray(indexHeader.nome) ? indexHeader.nome : [-1]),
+            ...(Array.isArray(indexHeader.percentual) ? indexHeader.percentual : [-1]),
+            ...(Array.isArray(indexHeader.validade) ? indexHeader.validade : [-1])
+        ];
+    };
+
+    const headersOriginais = headers.length - 1;
+    let novaColunaIndex = headers.length - 1;
+
+    for (let i = 0; i < ordem.length; i++) {
+        headers = table.querySelectorAll('th'); // Recarrega os headers
+        const button = headers[novaColunaIndex]; // Ultimo header da table
+        inserirNovaColuna(button, 'right');
+
+        novaColunaIndex++;
+
+        // Muda o titulo de acordo
+        const newSelect = rows[0].cells[novaColunaIndex].querySelector('select');
+        newSelect.selectedIndex = i;
+
+        for (let r = 1; r < rows.length; r++) {
+            if (ordem[i] === -1) {
+                break;
+            }
+
+            const novaColuna = rows[r].cells[novaColunaIndex];
+            const colunaAnterior = rows[r].cells[ordem[i]];
+
+            novaColuna.innerHTML = colunaAnterior.innerHTML;
+        }
+
+    }
+
+    for (let i = headersOriginais; i > 1; i--) {
+        removeColumnByIndex(i);
+    }
 
 });
 

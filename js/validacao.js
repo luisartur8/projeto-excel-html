@@ -436,26 +436,53 @@ function isValidCNPJ(cnpj) {
     }
 }
 
+function arrumaFloat(valor) {
+    // Excluir o que não for [0-9] (.) (,) (-)
+    valor = valor.trim().replace(/[^0-9.,-]/g, '');
+
+    // Não permite valores negativos
+    if (valor.includes('-')) {
+        return "";
+    }
+
+    // Permite apenas um ponto ou uma virgula, nunca os dois, com pelo menos um numero antes e depois
+    if (!/^\d+([.,]\d+)?$/.test(valor) || (valor.match(/[.,]/g) || []).length > 1) {
+        return "";
+    }
+
+    valor = valor.replace(',', '.');
+    return (parseFloat(parseFloat(valor).toFixed(2))).toString();
+}
+
 // tipoLancamento:
 
 function corrigirValor_venda(venda) {
-    console.log('valor_venda');
+    valor = arrumaFloat(valor);
+    if (percentual === '') {
+        return '';
+    }
+    return +valor >= 0 ? `R$ ${valor.replace('.', ',')}` : "";
 }
 
 function corrigirValor_resgate(resgate) {
-    console.log('valor_resgate');
+    valor = arrumaFloat(valor);
+    if (percentual === '') {
+        return '';
+    }
+    return +valor >= 0 ? `R$ ${valor.replace('.', ',')}` : "";
 }
 
 function corrigirItem_venda(item) {
-    console.log('item_venda');
+    return corrigirAnotacao(item);
 }
 
 function corrigirData_lancamento(item) {
-    console.log('data_lancamento');
+    console.log('data_lancamento'); // dd/mm/yyyy 00:00:00
 }
 
 function corrigirCodigo_vendedor(item) {
-    console.log('codigo_vendedor');
+    codigo = codigo.toString();
+    return codigo.replace(/[^A-Za-z0-9./-]/g, "") === codigo ? codigo : "";
 }
 
 // tipoOportunidade:
@@ -482,24 +509,6 @@ function corrigirBonus_validade(validade) {
 function corrigirCodigo(codigo) {
     codigo = codigo.toString();
     return codigo.replace(/[^A-Za-z0-9./-]/g, "") === codigo ? codigo : "";
-}
-
-function arrumaFloat(valor) {
-    // Excluir o que não for [0-9] (.) (,) (-)
-    valor = valor.trim().replace(/[^0-9.,-]/g, '');
-
-    // Não permite valores negativos
-    if (valor.includes('-')) {
-        return "";
-    }
-
-    // Permite apenas um ponto ou uma virgula, nunca os dois, com pelo menos um numero antes e depois
-    if (!/^\d+([.,]\d+)?$/.test(valor) || (valor.match(/[.,]/g) || []).length > 1) {
-        return "";
-    }
-
-    valor = valor.replace(',', '.');
-    return (parseFloat(parseFloat(valor).toFixed(2))).toString();
 }
 
 function corrigirPercentual(percentual) {

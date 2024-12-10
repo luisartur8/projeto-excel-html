@@ -46,7 +46,7 @@ const tipoLancamento = `
         <option value="anotacao">anotacao_venda</option>
         <option value="item_venda">item_venda</option>
         <option value="data_lancamento">data_lancamento</option>
-        <option value="nome">nome_vendedor</option>
+        <option value="nome_vendedor">nome_vendedor</option>
         <option value="codigo_vendedor">codigo_vendedor</option>
         <option value="DDD">DDD</option>
     </select>`;

@@ -187,6 +187,8 @@ function validarCelula(dado, comboBoxName) {
             return corrigirItem_venda(dado);
         case 'data_lancamento':
             return corrigirData_lancamento(dado);
+        case 'nome_vendedor':
+            return corrigirNome(dado);
         case 'codigo_vendedor':
             return corrigirCodigo_vendedor(dado);
         // Oportunidade
