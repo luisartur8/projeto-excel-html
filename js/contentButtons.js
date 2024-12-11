@@ -225,6 +225,7 @@ buttonModeloPadrao.addEventListener('click', () => {
         const newSelect = rows[0].cells[novaColunaIndex].querySelector('select');
         newSelect.selectedIndex = i;
 
+        // Cola a coluna antiga na atual
         for (let r = 1; r < rows.length; r++) {
             if (ordem[i] === -1) {
                 break;
@@ -238,6 +239,7 @@ buttonModeloPadrao.addEventListener('click', () => {
 
     }
 
+    // Remove as colunas antigas
     for (let i = headersOriginais; i > 1; i--) {
         removeColumnByIndex(i);
     }

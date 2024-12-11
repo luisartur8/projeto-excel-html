@@ -6,6 +6,8 @@ const headerContentHTML = `
             <button class="btn-executar-validacao" onclick="abrirModalValidacao(this)"><img src="assets/icon-header/lista-valida.png"></button>
             <button class="btn-apaga-red" onclick="apagaLinhaVermelha(this)"><img src="assets/icon-header/lista-apagar.png"></button>
             <button class="btn-abrir-localizar-substituir" onclick="abrirLocalizarSubstituir(this)"><img src="assets/icon-header/lupa.png"></button>
+            <button class="btn-ordenar-crescente" onclick="ordenarAlfabetico(this, 'crescente')">AZ</button>
+            <button class="btn-ordenar-decrescente" onclick="ordenarAlfabetico(this, 'decrescente')">ZA</button>
         </div>
         <span class="btn-inserir-direita" onclick="inserirNovaColuna(this, 'right')">></span>
     </div>
