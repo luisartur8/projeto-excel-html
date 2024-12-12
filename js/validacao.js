@@ -457,19 +457,19 @@ function arrumaFloat(valor) {
 // tipoLancamento:
 
 function corrigirValor_venda(venda) {
-    valor = arrumaFloat(valor);
-    if (percentual === '') {
+    venda = arrumaFloat(venda);
+    if (venda === '') {
         return '';
     }
-    return +valor >= 0 ? `R$ ${valor.replace('.', ',')}` : "";
+    return +venda >= 0 ? `R$ ${venda.replace('.', ',')}` : "";
 }
 
 function corrigirValor_resgate(resgate) {
-    valor = arrumaFloat(valor);
-    if (percentual === '') {
+    resgate = arrumaFloat(resgate);
+    if (resgate === '') {
         return '';
     }
-    return +valor >= 0 ? `R$ ${valor.replace('.', ',')}` : "";
+    return +resgate >= 0 ? `R$ ${resgate.replace('.', ',')}` : "";
 }
 
 function corrigirItem_venda(item) {
@@ -480,7 +480,7 @@ function corrigirData_lancamento(item) {
     console.log('data_lancamento'); // dd/mm/yyyy 00:00:00
 }
 
-function corrigirCodigo_vendedor(item) {
+function corrigirCodigo_vendedor(codigo) {
     codigo = codigo.toString();
     return codigo.replace(/[^A-Za-z0-9./-]/g, "") === codigo ? codigo : "";
 }

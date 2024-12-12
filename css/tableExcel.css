@@ -23,16 +23,23 @@
     border-collapse: collapse;
 }
 
-.minha-table th .minha-tabela td {
+.minha-tabela th .minha-tabela td {
     display: flex;
     text-align: center;
     align-content: center;
     border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+.minha-tabela th {
+    white-space: nowrap;
+    padding: 3px 3px;
+    border: 1px solid #b8b8b8;
+}
+
 .minha-tabela td {
     white-space: nowrap;
     padding: 3px 3px;
+    border: 1px solid #b8b8b8;
 }
 
 .botoes-header {
@@ -69,7 +76,7 @@
 }
 
 .selected-cell {
-    box-shadow:0px 0px 0px 1px #0063af inset;
+    box-shadow:0px 0px 0px 2px #0063af inset;
     border: 1px solid #0063af;
 }
 
