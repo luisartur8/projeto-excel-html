@@ -50,13 +50,23 @@ function corrigirNome(nome) {
 
 }
 
-function corrigirTelefone(telefone) {
+function corrigirTelefone(telefone, checkboxTelefoneInserirDDD, inputTelefoneInserirDDD) {
 
     if (telefone.includes('+') && !telefone.replace(/[^0-9+]/g, "").startsWith('+55')) {
         return "";
     }
 
+    let temMais = false;
+
+    if (telefone.includes('+')) {
+        temMais = true;
+    }
+
     telefone = sanitizeNumber(telefone);
+
+    if (temMais && telefone.startsWith("55") && (telefone.length === 11 || telefone.length === 10)) {
+        return "";
+    }
 
     if (telefone.startsWith("55") && (telefone.length === 12 || telefone.length === 13)) {
         telefone = telefone.substring(2);
@@ -103,7 +113,11 @@ function corrigirTelefoneSemDDD(telefone) {
         return "";
     }
 
-    return telefone;
+    if ((telefone.charAt(1) === '9' || telefone.charAt(1) === '8')) {
+        return telefone;
+    }
+
+    return '';
 
 }
 
@@ -133,7 +147,7 @@ function corrigirCpf_cnpj(cpf_cnpj) {
 
 }
 
-function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 'dd/mm/yyyy') {
+function corrigirData_nascimento(data_nascimento, formatoOrigem = 'dd/mm/yyyy', formatoFinal = 'dd/mm/yyyy') {
 
     data_nascimento = data_nascimento.replace(/\D/g, '/'); // Tudo o que não é número vira barra
 
@@ -176,17 +190,17 @@ function corrigirData_nascimento(data_nascimento, formatoOrigem, formatoFinal = 
         const match = data_nascimento.match(regex[formatoOrigem]);
         if (match) {
             if (formatoOrigem === 'dd/mm/yyyy' || formatoOrigem === 'dd/mm/yy') {
-                [_, dia, mes, ano] = match;
+                [, dia, mes, ano] = match;
             } else if (formatoOrigem === 'dd/yyyy/mm' || formatoOrigem === 'dd/yy/mm') {
-                [_, dia, ano, mes] = match;
+                [, dia, ano, mes] = match;
             } else if (formatoOrigem === 'mm/dd/yyyy' || formatoOrigem === 'mm/dd/yy') {
-                [_, mes, dia, ano] = match;
+                [, mes, dia, ano] = match;
             } else if (formatoOrigem === 'yyyy/dd/mm' || formatoOrigem === 'yy/dd/mm') {
-                [_, ano, dia, mes] = match;
+                [, ano, dia, mes] = match;
             } else if (formatoOrigem === 'mm/yyyy/dd' || formatoOrigem === 'mm/yy/dd') {
-                [_, mes, ano, dia] = match;
+                [, mes, ano, dia] = match;
             } else if (formatoOrigem === 'yyyy/mm/dd' || formatoOrigem === 'yy/mm/dd') {
-                [_, ano, mes, dia] = match;
+                [, ano, mes, dia] = match;
             }
         } else {
             return '';
@@ -287,26 +301,8 @@ function corrigirEmail(email) {
     }
 
     // Validação de comprimento (até 254 caracteres)
-    if (email.length > 254) {
+    if (email.length > 254 || email.length < 4) {
         return "";
-    }
-
-    // Alguns dominios de email conhecidos que não tem nada além do .com (Comum o usuario botar .br onde não existe)
-    const domains = [
-        "@hotmail.com", "@outlook.com", "@live.com", "@yahoo.com", "@gmail.com",
-        "@icloud.com", "@me.com", "@mac.com", "@aol.com", "@zoho.com",
-        "@mail.com", "@uol.com.br", "@bol.com.br", "@terra.com.br",
-        "@globo.com", "@g1.com.br"
-    ];
-    const domainLengths = [12, 12, 9, 10, 10, 11, 7, 8, 8, 9, 9, 11, 11, 13, 10, 10];
-
-    for (let i = 0; i < domains.length; i++) {
-        const domain = domains[i];
-        const domainIndex = email.indexOf(domain);
-
-        if (domainIndex !== -1) {
-            email = email.substring(0, domainIndex + domainLengths[i]);
-        }
     }
 
     // Regex e-mail pattern
@@ -436,7 +432,30 @@ function isValidCNPJ(cnpj) {
     }
 }
 
-function arrumaFloat(valor) {
+function convertToFloatNumber(value) {
+    if (typeof value !== 'string') return value;
+
+    if (value.indexOf('R$') !== -1) value = value.replace('R$', '');
+
+    value = String(value).trim();
+    if (value.indexOf('.') !== -1 && value.indexOf(',') !== -1) {
+        if (value.indexOf('.') < value.indexOf(',')) {
+            value = value.replace(/\./g, '');
+
+            return parseFloat(value.replace(/\,/g, '.'));
+        } else {
+            return parseFloat(value.replace(/,/gi, ''));
+        }
+    } else if (value.indexOf(',') !== -1 && value.indexOf('.') === -1) {
+        return parseFloat(value.replace(/,/gi, '.'));
+    } else if (value.indexOf(',') === -1 && value.indexOf('.') !== -1) {
+        return parseFloat(value)
+    } else {
+        return parseFloat(value) / 100;
+    }
+}
+
+function arrumaValor(valor) {
     // Excluir o que não for [0-9] (.) (,) (-)
     valor = valor.trim().replace(/[^0-9.,-]/g, '');
 
@@ -445,39 +464,57 @@ function arrumaFloat(valor) {
         return "";
     }
 
-    // Permite apenas um ponto ou uma virgula, nunca os dois, com pelo menos um numero antes e depois
-    if (!/^\d+([.,]\d+)?$/.test(valor) || (valor.match(/[.,]/g) || []).length > 1) {
-        return "";
-    }
+    valor = convertToFloatNumber(valor);
 
-    valor = valor.replace(',', '.');
     return (parseFloat(parseFloat(valor).toFixed(2))).toString();
+}
+
+function corrigirValor(valor) {
+    valor = arrumaValor(valor);
+    if (valor === '') {
+        return '';
+    }
+    return +valor >= 0 ? `R$ ${valor.replace('.', ',')}` : "";
 }
 
 // tipoLancamento:
 
-function corrigirValor_venda(venda) {
-    venda = arrumaFloat(venda);
-    if (venda === '') {
-        return '';
+const corrigirValor_venda = venda => corrigirValor(venda);
+const corrigirValor_resgate = resgate => corrigirValor(resgate);
+
+const corrigirAnotacao_venda = anotacao => corrigirAnotacao(anotacao);
+const corrigirItem_venda = item => corrigirAnotacao(item);
+
+function corrigirData_lancamento(data, formatoOrigem, formatoFinal = 'dd/mm/yyyy') {
+    // Remove espaços extras
+    data = data.trim().replace(/\s+/g, " ");
+
+    let time = [];
+
+    if (data.includes(' ')) {
+        data = data.split(' ');
+        time = data[1].split(':');
+    } else {
+        const dataCorrigida = corrigirData_nascimento(data, formatoOrigem, formatoFinal);
+        if (!dataCorrigida) {
+            return "";
+        }
+        return `${dataCorrigida} ${'00:00:00'}`;
     }
-    return +venda >= 0 ? `R$ ${venda.replace('.', ',')}` : "";
-}
 
-function corrigirValor_resgate(resgate) {
-    resgate = arrumaFloat(resgate);
-    if (resgate === '') {
-        return '';
+    if (data.length > 2 || time.length != 3) {
+        return "";
     }
-    return +resgate >= 0 ? `R$ ${resgate.replace('.', ',')}` : "";
-}
 
-function corrigirItem_venda(item) {
-    return corrigirAnotacao(item);
-}
+    // Formato horas
+    if (time[0] < 0 || time[0] >= 24) return "";
+    if (time[1] < 0 || time[1] >= 60) return "";
+    if (time[2] < 0 || time[2] >= 60) return "";
 
-function corrigirData_lancamento(item) {
-    console.log('data_lancamento'); // dd/mm/yyyy 00:00:00
+    // Corrigir data
+    let data_lancamento = corrigirData_nascimento(data[0], formatoOrigem, formatoFinal);
+
+    return `${data_lancamento} ${data[1]}`;
 }
 
 function corrigirCodigo_vendedor(codigo) {
@@ -487,16 +524,10 @@ function corrigirCodigo_vendedor(codigo) {
 
 // tipoOportunidade:
 
-function corrigirBonus_valor(valor) {
-    valor = arrumaFloat(valor);
-    if (percentual === '') {
-        return '';
-    }
-    return +valor >= 0 ? `R$ ${valor.replace('.', ',')}` : "";
-}
+const corrigirBonus_valor = valor => corrigirValor(valor);
 
 function corrigirBonus_validade(validade) {
-    validade = arrumaFloat(validade);
+    validade = arrumaValor(validade);
     if (validade === '') {
         return '';
     }
@@ -512,7 +543,7 @@ function corrigirCodigo(codigo) {
 }
 
 function corrigirPercentual(percentual) {
-    percentual = arrumaFloat(percentual);
+    percentual = arrumaValor(percentual);
     if (percentual === '') {
         return '';
     }
@@ -520,7 +551,7 @@ function corrigirPercentual(percentual) {
 }
 
 function corrigirValidade(validade) {
-    validade = arrumaFloat(validade);
+    validade = arrumaValor(validade);
     if (validade === '') {
         return '';
     }

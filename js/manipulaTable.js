@@ -245,7 +245,7 @@ function abrirModalValidacao(button) {
         return;
     }
 
-    if (comboBoxName === 'data_nascimento') {
+    if (comboBoxName === 'data_nascimento' || comboBoxName === 'data_lancamento') {
         configurarModalDataNascimento();
         return;
     }
@@ -298,10 +298,12 @@ function validarCelula(dado, comboBoxName) {
             return corrigirValor_venda(dado);
         case 'valor_resgate':
             return corrigirValor_resgate(dado);
+        case 'anotacao_venda':
+            return corrigirAnotacao_venda(dado);
         case 'item_venda':
             return corrigirItem_venda(dado);
         case 'data_lancamento':
-            return corrigirData_lancamento(dado);
+            return corrigirData_lancamento(dado, formatoOriginal(), formatoFinal());
         case 'nome_vendedor':
             return corrigirNome(dado);
         case 'codigo_vendedor':

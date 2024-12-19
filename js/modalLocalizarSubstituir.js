@@ -21,6 +21,10 @@ const localizarSubstituirDoneButton = document.querySelector('.done-button');
 let indexAtualSearchReplace = null;
 let indexLastSearch = null;
 
+modalLocalizarSubstituir.addEventListener('click', () => {
+    removeCelulaSelecionada();
+});
+
 localizarSubstituirSearchButton.addEventListener('click', () => {
 
     const infoTabela = capturaInfoTable();
