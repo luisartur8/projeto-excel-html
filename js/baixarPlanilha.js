@@ -26,7 +26,7 @@ function exportarParaExcel() {
 
         if (selectElement) {
             worksheet[cellAddress] = {
-                v: selectElement.value
+                v: selectElement.options[selectElement.selectedIndex].innerText
             };
         }
     }

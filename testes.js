@@ -35,7 +35,15 @@ function arrumaValor(valor) {
     return ((parseFloat(valor).toFixed(2))).toString();
 }
 
+function corrigirValor(valor) {
+    valor = arrumaValor(valor.toString());
+    if (valor === '') {
+        return '';
+    }
+    return +valor >= 0 ? `R$ ${valor.replace('.', ',')}` : "";
+}
+
 console.log(convertToFloatNumber('200.000,34'))
 console.log(convertToFloatNumber(0.5))
 
-console.log(arrumaValor('40'))
+console.log(corrigirValor('-1'))

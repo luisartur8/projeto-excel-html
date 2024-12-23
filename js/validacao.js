@@ -470,7 +470,7 @@ function arrumaValor(valor) {
 }
 
 function corrigirValor(valor) {
-    valor = arrumaValor(valor);
+    valor = arrumaValor(valor.toString());
     if (valor === '') {
         return '';
     }
