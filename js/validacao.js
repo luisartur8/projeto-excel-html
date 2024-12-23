@@ -451,7 +451,7 @@ function convertToFloatNumber(value) {
     } else if (value.indexOf(',') === -1 && value.indexOf('.') !== -1) {
         return parseFloat(value)
     } else {
-        return parseFloat(value) / 100;
+        return parseFloat(value);
     }
 }
 
@@ -466,7 +466,7 @@ function arrumaValor(valor) {
 
     valor = convertToFloatNumber(valor);
 
-    return (parseFloat(parseFloat(valor).toFixed(2))).toString();
+    return (parseFloat(valor).toFixed(2)).toString();
 }
 
 function corrigirValor(valor) {
