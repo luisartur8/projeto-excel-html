@@ -8,8 +8,6 @@ Gerenciador de planilhas desenvolvido para acelerar a manipulação de tabelas e
 
 ## Como usar
 
-Abrir usando o live server ou simplesmente clicando
-
 1. Instalando as dependências:
 ```bash
 npm install
@@ -17,4 +15,4 @@ npm install
 
 2. Abrindo o projeto:
 ```bash
-index.html (Open with live server)
+start index.html
